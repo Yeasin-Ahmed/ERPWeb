@@ -218,7 +218,7 @@ namespace ERPWeb.Controllers
         }
         #endregion
 
-        #region Warehouse Stock Info
+        #region Warehouse Stock Info -Table
 
         [HttpGet]
         public ActionResult GetWarehouseStockInfoList()
@@ -289,7 +289,7 @@ namespace ERPWeb.Controllers
         }
         #endregion
 
-        #region Production Requisition
+        #region Production Requisition -Table
         [HttpGet]
         public ActionResult GetReqInfoList()
         {
@@ -388,7 +388,6 @@ namespace ERPWeb.Controllers
             }
             return Json(IsSuccess);
         }
-
         #endregion
 
         protected override void Dispose(bool disposing)
