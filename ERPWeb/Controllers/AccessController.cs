@@ -16,5 +16,11 @@ namespace ERPWeb.Controllers
         {
             base.Dispose(disposing);
         }
+
+        [HttpGet]
+        public ActionResult LogIn()
+        {
+            return Content("");
+        }
     }
 }
