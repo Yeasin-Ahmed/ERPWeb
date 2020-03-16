@@ -15,9 +15,24 @@ namespace ERPBO.ControlPanel.DomainModels
         public long OrgId { get; set; }
         [StringLength(150)]
         public string OrganizationName { get; set; }
+        [StringLength(50)]
+        public string ShortName { get; set; }
         [StringLength(150)]
         public string Address { get; set; }
+        [StringLength(150)]
+        public string Email { get; set; }
+        [StringLength(50)]
+        public string PhoneNumber { get; set; }
+        [StringLength(50)]
+        public string MobileNumber { get; set; }
+        [StringLength(50)]
+        public string Fax { get; set; }
         public bool IsActive { get; set; }
+        public Nullable<DateTime> ContractDate { get; set; }
+        [StringLength(250)]
+        public string OrgLogoPath { get; set; }
+        [StringLength(250)]
+        public string ReportLogoPath { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
