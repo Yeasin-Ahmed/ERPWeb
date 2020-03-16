@@ -73,7 +73,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header alert-primary">
-                <h4 id="modalHeading" class="modal-title">Add New ItemType</h4>
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalhead">Add New ItemType</span> </h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
@@ -145,6 +145,7 @@
         })
 
         function OpenModal() {
+            $("#spanModalhead").text('Add New ItemType');
             $("#modalItemType").modal("show");
             $(".error").addClass("hide");
         }
@@ -205,6 +206,7 @@
         $(".data-edit-item").click(function (e) {
             e.preventDefault()
             OpenModal()
+            $("#spanModalhead").text('Update ItemType');
         });
 
         $(document).on("click", "a.data-edit-item", function (e) {
