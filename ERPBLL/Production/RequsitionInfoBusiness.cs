@@ -1,4 +1,5 @@
-﻿using ERPBLL.Inventory;
+﻿using ERPBLL.Common;
+using ERPBLL.Inventory;
 using ERPBLL.Inventory.Interface;
 using ERPBLL.Production.Interface;
 using ERPBO.Production.DomainModels;
@@ -44,7 +45,7 @@ namespace ERPBLL.Production
             requsitionInfo.WarehouseId = reqInfoDTO.WarehouseId.Value;
             requsitionInfo.LineId = reqInfoDTO.LineId.Value;
             requsitionInfo.OrganizationId = orgId;
-            requsitionInfo.StateStatus = "Pending";
+            requsitionInfo.StateStatus = RequisitionStatus.Pending;
             requsitionInfo.ReqInfoCode =("REQ-"+ DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
 
             requsitionInfo.EntryDate = DateTime.Now;

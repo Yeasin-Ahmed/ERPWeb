@@ -140,9 +140,9 @@
             })
         })
 
-        $(document).on('click',".btnDecline", function(e) {
+        $(document).on('click',".btnReject", function(e) {
             e.preventDefault();
-            fnRequisitionStateChange(hdfReqInfoId.val(), hdfRowIndex.val(), reqStatus.decline);
+            fnRequisitionStateChange(hdfReqInfoId.val(), hdfRowIndex.val(), reqStatus.reject);
         })
 
         $(document).on('click', ".btnRecheck", function (e) {

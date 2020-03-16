@@ -17,6 +17,7 @@ namespace ERPBO.ControlPanel.DomainModels
         public string OrganizationName { get; set; }
         [StringLength(150)]
         public string Address { get; set; }
+        public bool IsActive { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }

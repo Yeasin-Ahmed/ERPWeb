@@ -161,7 +161,8 @@
                 var data = JSON.stringify({ reqId: id, status: status });
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Production/SaveRequisitionStatus', data, getToken())).then(function (res, status) {
                     if (status == "success" && res === true) {
-                        alert("Requisition State has been changed successfully");
+                        $(".toastrDefaultSuccess").trigger('click');
+                        //alert("Requisition State has been changed successfully");
                         $("#modalReqDetails").modal("toggle").toggle("fast");
                         hdfReqInfoId.val('0');
                         hdfRowIndex.val("");
@@ -172,6 +173,7 @@
                     }
                 }).fail(function (error) {
                     console.log(error);
+                    $(".toastrDefaultError").trigger('click');
                 })
             }
         }

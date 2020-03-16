@@ -12,11 +12,11 @@ namespace ERPBLL.Common
         public static IEnumerable<Dropdown> ListOfReqStatus()
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>() {
-                new Dropdown{text="Pending",value="Pending" },
-                new Dropdown{text="Recheck",value="Recheck" },
-                new Dropdown{text="Approved",value="Approved" },
-                new Dropdown{text="Accepted",value="Accepted" },
-                new Dropdown{text="Decline",value="Decline" }
+                new Dropdown{text=RequisitionStatus.Pending,value=RequisitionStatus.Pending },
+                new Dropdown{text=RequisitionStatus.Recheck,value=RequisitionStatus.Recheck },
+                new Dropdown{text=RequisitionStatus.Approved,value=RequisitionStatus.Approved },
+                new Dropdown{text=RequisitionStatus.Accepted,value=RequisitionStatus.Accepted },
+                new Dropdown{text=RequisitionStatus.Rejected,value=RequisitionStatus.Pending }
             };
             return dropdowns;
         }

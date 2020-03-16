@@ -1,4 +1,5 @@
-﻿using ERPBLL.Inventory.Interface;
+﻿using ERPBLL.Common;
+using ERPBLL.Inventory.Interface;
 using ERPBLL.Production;
 using ERPBLL.Production.Interface;
 using ERPBO.Inventory.DomainModels;
@@ -57,7 +58,7 @@ namespace ERPBLL.Inventory
                 stockDetail.Remarks = item.Remarks;
                 stockDetail.UnitId = _itemBusiness.GetItemById(item.ItemId.Value, orgId).UnitId;
                 stockDetail.EntryDate = DateTime.Now;
-                stockDetail.StockStatus = "Stock-In";
+                stockDetail.StockStatus = StockStatus.StockIn;
 
                 var warehouseInfo = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId).FirstOrDefault();
                 if (warehouseInfo != null)
@@ -117,7 +118,7 @@ namespace ERPBLL.Inventory
                                     EntryDate = DateTime.Now,
                                     OrganizationId = orgId,
                                     Remarks = item.Remarks,
-                                    StockStatus = item.StockStatus,
+                                    StockStatus = StockStatus.StockOut,
                                     RefferenceNumber = item.RefferenceNumber
                                 };
                                 warehouseStockInfoRepository.Update(warehouseInfo);
@@ -162,8 +163,8 @@ namespace ERPBLL.Inventory
                         EntryDate = DateTime.Now,
                         Remarks = "Stock Out By Production Requistion " + "(" + reqInfo.ReqInfoCode + ")",
                         RefferenceNumber = reqInfo.ReqInfoCode,
-                        StockStatus = "Stock-Out"
-                    };
+                        StockStatus = StockStatus.StockOut
+                };
 
                     stockDetailDTOs.Add(stockDetailDTO);
                 }

@@ -297,7 +297,7 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
 
-            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status => status.value == "Pending" || status.value == "Accepted" || status.value == "Decline").Select(st => new SelectListItem
+            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status => status.value == RequisitionStatus.Pending || status.value == RequisitionStatus.Accepted || status.value == RequisitionStatus.Rejected).Select(st => new SelectListItem
             {
                 Text = st.text,
                 Value = st.value
@@ -308,7 +308,7 @@ namespace ERPWeb.Controllers
         // Used By  GetReqInfoList
         public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? line, string fromDate, string toDate)
         {
-            IEnumerable<RequsitionInfoDTO> requsitionInfoDTO = _requsitionInfoBusiness.GetAllReqInfoByOrgId(OrgId).Where(req => (req.StateStatus == "Pending" || req.StateStatus == "Accepted" || req.StateStatus == "Decline")
+            IEnumerable<RequsitionInfoDTO> requsitionInfoDTO = _requsitionInfoBusiness.GetAllReqInfoByOrgId(OrgId).Where(req => (req.StateStatus == RequisitionStatus.Pending || req.StateStatus == RequisitionStatus.Accepted || req.StateStatus == RequisitionStatus.Rejected)
                 &&
                 (reqCode == null || reqCode.Trim() == "" || req.ReqInfoCode.Contains(reqCode))
                 &&
@@ -377,11 +377,11 @@ namespace ERPWeb.Controllers
             bool IsSuccess = false;
             if (reqId > 0 && !string.IsNullOrEmpty(status))
             {
-                if(status == "Decline" || status == "Recheck")
+                if(RequisitionStatus.Rejected == status || RequisitionStatus.Recheck == status)
                 {
                     IsSuccess = _requsitionInfoBusiness.SaveRequisitionStatus(reqId, status, OrgId);
                 }
-                else
+                else if (RequisitionStatus.Approved == status)
                 {
                     IsSuccess = _warehouseStockDetailBusiness.SaveWarehouseStockOutByProductionRequistion(reqId, status, OrgId,UserId);
                 }
