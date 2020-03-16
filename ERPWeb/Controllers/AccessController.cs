@@ -20,7 +20,7 @@ namespace ERPWeb.Controllers
         [HttpGet]
         public ActionResult LogIn()
         {
-            return Content("");
+            return Content("This is login content");
         }
     }
 }

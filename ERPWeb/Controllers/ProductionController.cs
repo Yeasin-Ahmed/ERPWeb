@@ -90,7 +90,7 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
 
-            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status => status.value != "Pending").Select(st => new SelectListItem
+            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status => status.value != RequisitionStatus.Pending).Select(st => new SelectListItem
             {
                 Text = st.text,
                 Value = st.value
@@ -130,7 +130,7 @@ namespace ERPWeb.Controllers
         public ActionResult GetReqInfoParitalList(string reqCode,long? warehouseId,string status, long? line,string fromDate, string toDate)
         {
             IEnumerable<RequsitionInfoDTO> requsitionInfoDTO = _requsitionInfoBusiness.GetAllReqInfoByOrgId(OrgId).Where(req=>
-                req.StateStatus != "Pending" &&
+                req.StateStatus != RequisitionStatus.Pending &&
                 (reqCode == null ||reqCode.Trim() == ""|| req.ReqInfoCode.Contains(reqCode)) &&
                 (warehouseId == null || warehouseId <= 0 || req.WarehouseId == warehouseId) &&
                 (status == null || status.Trim() == "" || req.StateStatus == status.Trim())&&
@@ -191,7 +191,7 @@ namespace ERPWeb.Controllers
         public ActionResult SaveRequisitionStatus(long reqId, string status)
         {
             bool IsSuccess = false;
-            if(reqId> 0 && !string.IsNullOrEmpty(status) && status == "Accepted")
+            if(reqId> 0 && !string.IsNullOrEmpty(status) && status == RequisitionStatus.Accepted)
             {
                 IsSuccess = _productionStockDetailBusiness.SaveProductionStockInByProductionRequistion(reqId, status, OrgId, UserId);
             }

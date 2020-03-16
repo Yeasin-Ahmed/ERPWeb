@@ -1,4 +1,5 @@
-﻿using ERPBLL.Inventory;
+﻿using ERPBLL.Common;
+using ERPBLL.Inventory;
 using ERPBLL.Inventory.Interface;
 using ERPBLL.Production.Interface;
 using ERPBO.Production.DomainModels;
@@ -55,7 +56,7 @@ namespace ERPBLL.Production
                 stockDetail.Remarks = item.Remarks;
                 stockDetail.UnitId = _itemBusiness.GetItemById(item.ItemId.Value, orgId).UnitId;
                 stockDetail.EntryDate = DateTime.Now;
-                stockDetail.StockStatus = "Stock-In";
+                stockDetail.StockStatus = StockStatus.StockIn;
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
 
                 var productionInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId).FirstOrDefault();
@@ -91,7 +92,7 @@ namespace ERPBLL.Production
         {
             var reqInfo = _requsitionInfoBusiness.GetRequisitionById(reqId, orgId);
             var reqDetail = _requsitionDetailBusiness.GetRequsitionDetailByReqId(reqId, orgId).ToList();
-            if(reqInfo!= null && reqInfo.StateStatus =="Approved" && reqDetail.Count > 0)
+            if(reqInfo!= null && reqInfo.StateStatus == RequisitionStatus.Approved && reqDetail.Count > 0)
             {
                 List<ProductionStockDetailDTO> productionStockDetailDTOs = new List<ProductionStockDetailDTO>();
                 foreach (var item in reqDetail)
@@ -104,7 +105,7 @@ namespace ERPBLL.Production
                         OrganizationId = orgId,
                         EUserId = userId,
                         UnitId = item.UnitId,
-                        StockStatus = "Stock-In",
+                        StockStatus = StockStatus.StockIn,
                         Remarks = item.Remarks,
                         Quantity = (int)item.Quantity.Value,
                         RefferenceNumber = reqInfo.ReqInfoCode

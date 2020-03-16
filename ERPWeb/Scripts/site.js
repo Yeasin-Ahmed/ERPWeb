@@ -15,11 +15,17 @@ var type = {
 };
 
 var reqStatus = {
-    decline: "Decline",
-    recheck: "Recheck",
-    accepted: "Accepted",
     pending: "Pending",
-    approved: "Approved"
+    reject: "Rejected",
+    recheck: "Recheck",
+    approved: "Approved",
+    accepted: "Accepted"
+};
+
+var stockStatus = {
+    stockIn: "Stock-In",
+    stockOut: "Stock-Out",
+    stockReturn: "Stock-Return"
 };
 
 // Execuation Status ...
@@ -27,8 +33,11 @@ var execuStatus = {
     successSave: 'Data has been save successfully',
     successEdit: 'Data has been updated successfully',
     successDelete: 'Data has been deleted successfully',
-    fail: 'Something went wrong'
+    fail: 'Something went wrong',
+    reqStatusSave: "Requisition status has been changed successfully",
+    reqStatusFail: "Requisition status has been failed to change"
 };
+
 
 // Loading dropdown using ajax..
 // All the Parameters are required accept contextKey
