@@ -1,4 +1,6 @@
-﻿@model IEnumerable<ERPBO.Inventory.ViewModels.WarehouseStockInfoViewModel>
+﻿@model PagedList.IPagedList<ERPBO.Inventory.DTOModel.WarehouseStockInfoDTO>
+@using PagedList;
+@using PagedList.Mvc;
 @{
     int sl = 0;
 }
@@ -51,3 +53,8 @@
             }
     </tbody>
 </table>
+<div class="container">
+    <ul class="pagination pagination-sm float-lg-right">
+        @Html.PagedListPager((IPagedList)Model, page => Url.Action("GetWarehouseStockInfoList", new { page}),new PagedListRenderOptions() { Display=PagedListDisplayMode.IfNeeded,DisplayPageCountAndCurrentLocation=true})
+    </ul>
+</div>

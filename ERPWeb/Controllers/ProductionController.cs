@@ -5,6 +5,7 @@ using ERPBO.Inventory.DTOModel;
 using ERPBO.Production.DTOModel;
 using ERPBO.Production.ViewModels;
 using ERPWeb.Filters;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,9 +43,9 @@ namespace ERPWeb.Controllers
         }
 
         #region ProductionLine
-        public ActionResult GetProductionLineList()
+        public ActionResult GetProductionLineList(int? page)
         {
-            IEnumerable<ProductionLineDTO> productionLineDTO = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new ProductionLineDTO
+            IPagedList<ProductionLineViewModel> productionLineDTO = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new ProductionLineViewModel
             {
                 LineId = line.LineId,
                 LineNumber = line.LineNumber,
@@ -56,10 +57,11 @@ namespace ERPWeb.Controllers
                 EntryDate = line.EntryDate,
                 UpUserId = line.UpUserId,
                 UpdateDate = line.UpdateDate
-            }).ToList();
-            List<ProductionLineViewModel> productionLineViewModels = new List<ProductionLineViewModel>();
-            AutoMapper.Mapper.Map(productionLineDTO, productionLineViewModels);
-            return View(productionLineViewModels);
+            }).OrderBy(p => p.LineId).ToPagedList(page ?? 1, 3);
+            IEnumerable<ProductionLineViewModel> productionLineViewModelForPage = new List<ProductionLineViewModel>();
+            //List<ProductionLineViewModel> productionLineViewModels = new List<ProductionLineViewModel>();
+           // AutoMapper.Mapper.Map(productionLineDTO, productionLineViewModels);
+            return View(productionLineDTO);
         }
         [HttpPost]
         public ActionResult SaveProductionLine(ProductionLineViewModel productionLineViewModel)
@@ -84,7 +86,7 @@ namespace ERPWeb.Controllers
 
         #region Requsition
         [HttpGet]
-        public ActionResult GetReqInfoList()
+        public ActionResult GetReqInfoList(int? page)
         {
             ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(ware => new SelectListItem { Text = ware.WarehouseName, Value = ware.Id.ToString() }).ToList();
 
@@ -127,13 +129,13 @@ namespace ERPWeb.Controllers
         }
 
         // Used By  GetReqInfoList ActionMethod
-        public ActionResult GetReqInfoParitalList(string reqCode,long? warehouseId,string status, long? line,string fromDate, string toDate)
+        public ActionResult GetReqInfoParitalList(string reqCode,long? warehouseId,string status, long? line,string fromDate, string toDate,int? page)
         {
-            IEnumerable<RequsitionInfoDTO> requsitionInfoDTO = _requsitionInfoBusiness.GetAllReqInfoByOrgId(OrgId).Where(req=>
+            IPagedList<RequsitionInfoViewModel> requsitionInfoViewModels = _requsitionInfoBusiness.GetAllReqInfoByOrgId(OrgId).Where(req =>
                 req.StateStatus != RequisitionStatus.Pending &&
-                (reqCode == null ||reqCode.Trim() == ""|| req.ReqInfoCode.Contains(reqCode)) &&
+                (reqCode == null || reqCode.Trim() == "" || req.ReqInfoCode.Contains(reqCode)) &&
                 (warehouseId == null || warehouseId <= 0 || req.WarehouseId == warehouseId) &&
-                (status == null || status.Trim() == "" || req.StateStatus == status.Trim())&&
+                (status == null || status.Trim() == "" || req.StateStatus == status.Trim()) &&
                 (line == null || line <= 0 || req.LineId == line) &&
                 (
                     (fromDate == null && toDate == null)
@@ -149,7 +151,7 @@ namespace ERPWeb.Controllers
                     ||
                     (toDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
                 )
-            ).Select(info => new RequsitionInfoDTO
+            ).Select(info => new RequsitionInfoViewModel
             {
                 ReqInfoId = info.ReqInfoId,
                 ReqInfoCode = info.ReqInfoCode,
@@ -158,13 +160,14 @@ namespace ERPWeb.Controllers
                 StateStatus = info.StateStatus,
                 Remarks = info.Remarks,
                 OrganizationId = info.OrganizationId,
-                EntryDate =info.EntryDate,
+                EntryDate = info.EntryDate,
                 WarehouseId = info.WarehouseId,
                 WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId, OrgId).WarehouseName),
                 Qty = _requsitionDetailBusiness.GetRequsitionDetailByReqId(info.ReqInfoId, OrgId).Select(s => s.ItemId).Distinct().Count(),
-            }).ToList();
-            List<RequsitionInfoViewModel> requsitionInfoViewModels = new List<RequsitionInfoViewModel>();
-            AutoMapper.Mapper.Map(requsitionInfoDTO, requsitionInfoViewModels);
+            }).OrderBy(p => p.ReqInfoId).ToPagedList(page ?? 1, 3);
+            IEnumerable<RequsitionInfoViewModel> requsitionInfoViewModelForPage = new List<RequsitionInfoViewModel>();
+            //List<RequsitionInfoViewModel> requsitionInfoViewModels = new List<RequsitionInfoViewModel>();
+            //AutoMapper.Mapper.Map(requsitionInfoDTO, requsitionInfoViewModels);
             return PartialView(requsitionInfoViewModels);
         }
         public ActionResult GetRequsitionDetails(long? reqId)
@@ -214,7 +217,7 @@ namespace ERPWeb.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetProductionStockInfoPartialList(long? WarehouseId, long? ItemTypeId, long? ItemId)
+        public ActionResult GetProductionStockInfoPartialList(long? WarehouseId, long? ItemTypeId, long? ItemId,int? page)
         {
             IEnumerable<ProductionStockInfoDTO> productionStockInfoDTO = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(OrgId).Select(info => new ProductionStockInfoDTO
             {
@@ -233,11 +236,11 @@ namespace ERPWeb.Controllers
                 OrganizationId = info.OrganizationId,
             }).AsEnumerable();
 
-            productionStockInfoDTO = productionStockInfoDTO.Where(ws => (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId) && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)).ToList();
+            productionStockInfoDTO = productionStockInfoDTO.Where(ws => (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId) && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)).OrderBy(p => p.StockInfoId).ToPagedList(page ?? 1, 3);
 
-            List<ProductionStockInfoViewModel> productionStockInfoViews = new List<ProductionStockInfoViewModel>();
-            AutoMapper.Mapper.Map(productionStockInfoDTO, productionStockInfoViews);
-            return PartialView("_productionStockInfoList", productionStockInfoViews);
+           // List<ProductionStockInfoViewModel> productionStockInfoViews = new List<ProductionStockInfoViewModel>();
+            //AutoMapper.Mapper.Map(productionStockInfoDTO, productionStockInfoViews);
+            return PartialView("_productionStockInfoList", productionStockInfoDTO);
         }
         #endregion
 

@@ -1,9 +1,11 @@
-﻿@model IEnumerable<ERPBO.Inventory.ViewModels.WarehouseViewModel>
+﻿@model PagedList.IPagedList<ERPBO.Inventory.ViewModels.WarehouseViewModel>
 @{
     ViewBag.Title = "List Of Warehouse";
     int sl = 0;
     string badge = string.Empty;
 }
+@using PagedList;
+@using PagedList.Mvc;
 
 <div class="row">
     <div class="col-md-12 text-center">
@@ -62,6 +64,11 @@
                 }*@
             </tbody>
         </table>
+        <div class="container">
+            <ul class="pagination pagination-lg float-lg-right">
+                @Html.PagedListPager((IPagedList)Model,page=>Url.Action("GetWarehouseList",new { page }), new PagedListRenderOptions() { Display=PagedListDisplayMode.IfNeeded,DisplayPageCountAndCurrentLocation=true})
+            </ul>
+        </div>
     </div>
 </div>
 
