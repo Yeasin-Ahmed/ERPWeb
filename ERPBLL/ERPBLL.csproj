@@ -56,6 +56,8 @@
     <Compile Include="Inventory\Interface\IWarehouseStockInfoBusiness.cs" />
     <Compile Include="Inventory\WarehouseStockDetailBusiness.cs" />
     <Compile Include="Inventory\WarehouseStockInfoBusiness.cs" />
+    <Compile Include="Production\DescriptionBusiness.cs" />
+    <Compile Include="Production\Interface\IDescriptionBusiness.cs" />
     <Compile Include="Production\Interface\IProductionLineBusiness.cs" />
     <Compile Include="Production\Interface\IProductionStockInfoBusiness.cs" />
     <Compile Include="Production\Interface\IRequsitionDetailBusiness.cs" />

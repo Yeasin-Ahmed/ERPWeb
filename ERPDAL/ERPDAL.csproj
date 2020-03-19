@@ -61,6 +61,10 @@
     <Compile Include="ProductionContextMigrations\202003150420259_ProductionAllEntities.Designer.cs">
       <DependentUpon>202003150420259_ProductionAllEntities.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202003190922328_ProductiontblDescription.cs" />
+    <Compile Include="ProductionContextMigrations\202003190922328_ProductiontblDescription.Designer.cs">
+      <DependentUpon>202003190922328_ProductiontblDescription.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -90,6 +94,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202003150420259_ProductionAllEntities.resx">
       <DependentUpon>202003150420259_ProductionAllEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202003190922328_ProductiontblDescription.resx">
+      <DependentUpon>202003190922328_ProductiontblDescription.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -57,9 +57,11 @@
     <Compile Include="Inventory\DTOModel\WarehouseStockInfoDTO.cs" />
     <Compile Include="Inventory\ViewModels\WarehouseStockDetailViewModel.cs" />
     <Compile Include="Inventory\ViewModels\WarehouseStockInfoViewModel.cs" />
+    <Compile Include="Production\DomainModels\Description.cs" />
     <Compile Include="Production\DomainModels\ProductionLine.cs" />
     <Compile Include="Production\DomainModels\ProductionStockDetail.cs" />
     <Compile Include="Production\DomainModels\ProductionStockInfo.cs" />
+    <Compile Include="Production\DTOModel\DescriptionDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionLineDTO.cs" />
     <Compile Include="Production\DTOModel\ReqInfoDetailsDTO.cs" />
     <Compile Include="Production\DTOModel\RequsitionDetailDTO.cs" />
@@ -75,6 +77,7 @@
     <Compile Include="Inventory\ViewModels\ItemViewModel.cs" />
     <Compile Include="Production\DTOModel\ProductionStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionStockInfoDTO.cs" />
+    <Compile Include="Production\ViewModels\DescriptionViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionLineViewModel.cs" />
     <Compile Include="Production\ViewModels\RequsitionDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\RequsitionInfoViewModel.cs" />
