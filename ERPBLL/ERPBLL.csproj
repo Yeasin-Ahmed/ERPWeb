@@ -50,6 +50,8 @@
   <ItemGroup>
     <Compile Include="Common\Status.cs" />
     <Compile Include="Common\Utility.cs" />
+    <Compile Include="ControlPanel\Interface\IOrganizationBusiness.cs" />
+    <Compile Include="ControlPanel\OrganizationBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemTypeBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemBusiness.cs" />
     <Compile Include="Inventory\Interface\IWarehouseStockDetailBusiness.cs" />

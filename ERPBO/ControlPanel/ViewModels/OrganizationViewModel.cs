@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPBO.ControlPanel.DomainModels
+namespace ERPBO.ControlPanel.ViewModels
 {
-    [Table("tblOrganizations")]
-    public class Organization
+    public class OrganizationViewModel
     {
-        [Key]
         public long OrgId { get; set; }
         [StringLength(150)]
         public string OrganizationName { get; set; }
@@ -39,6 +36,7 @@ namespace ERPBO.ControlPanel.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
-        public ICollection<Branch> Branches { get; set; }
+        // Custom Prop
+        public string StateStatus { get; set; }
     }
 }

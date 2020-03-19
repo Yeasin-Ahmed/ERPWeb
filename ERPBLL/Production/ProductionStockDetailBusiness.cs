@@ -16,26 +16,28 @@ namespace ERPBLL.Production
 {
     public class ProductionStockDetailBusiness : IProductionStockDetailBusiness
     {
-        private readonly ProductionStockDetailRepository _productionStockDetailRepository; //table
-        private readonly ProductionStockInfoRepository _productionStockInfoRepository; // table
-        private readonly IRequsitionInfoBusiness _requsitionInfoBusiness; // table
-        private readonly IRequsitionDetailBusiness _requsitionDetailBusiness; // table
-        private readonly IProductionStockInfoBusiness _productionStockInfoBusiness; // table
-        private readonly IItemBusiness _itemBusiness;  // table
-
         private readonly IProductionUnitOfWork _productionDb; // database;
         private readonly IInventoryUnitOfWork _inventoryDb; // database
-        public ProductionStockDetailBusiness(IProductionUnitOfWork productionDb , IInventoryUnitOfWork inventoryDb)
+
+        private readonly ProductionStockDetailRepository _productionStockDetailRepository; //repo
+        private readonly ProductionStockInfoRepository _productionStockInfoRepository; // repo
+
+        private readonly IRequsitionInfoBusiness _requsitionInfoBusiness; // BC
+        private readonly IRequsitionDetailBusiness _requsitionDetailBusiness; // BC
+        private readonly IProductionStockInfoBusiness _productionStockInfoBusiness; // BC
+        private readonly IItemBusiness _itemBusiness;  // BC
+
+        public ProductionStockDetailBusiness(IProductionUnitOfWork productionDb , IInventoryUnitOfWork inventoryDb, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionStockInfoBusiness productionStockInfoBusiness , IItemBusiness itemBusiness)
         {
             this._productionDb = productionDb;
             this._inventoryDb = inventoryDb;
-
             _productionStockDetailRepository = new ProductionStockDetailRepository(this._productionDb);
             _productionStockInfoRepository =  new ProductionStockInfoRepository(this._productionDb);
-            _productionStockInfoBusiness = new ProductionStockInfoBusiness(this._productionDb);
-            _requsitionInfoBusiness = new RequsitionInfoBusiness(this._productionDb, this._inventoryDb);
-            _requsitionDetailBusiness = new RequsitionDetailBusiness(this._productionDb);
-            _itemBusiness = new ItemBusiness(this._inventoryDb);
+
+            _productionStockInfoBusiness = productionStockInfoBusiness;
+            _requsitionInfoBusiness = requsitionInfoBusiness;
+            _requsitionDetailBusiness = requsitionDetailBusiness;
+            _itemBusiness = itemBusiness;
         }
         public IEnumerable<ProductionStockDetail> GelAllProductionStockDetailByOrgId(long orgId)
         {

@@ -16,27 +16,30 @@ namespace ERPBLL.Inventory
 {
     public class WarehouseStockDetailBusiness : IWarehouseStockDetailBusiness
     {
-        private readonly IInventoryUnitOfWork _inventoryDb; // database
+        /// <summary>
+        ///  BC Stands for          - Business Class
+        ///  db Stands for          - Database
+        ///  repo Stands for       - Repository
+        /// </summary>
+        
+        private readonly IInventoryUnitOfWork _inventoryDb; // db
         private readonly IItemBusiness _itemBusiness;
         private readonly IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
-        private readonly WarehouseStockDetailRepository warehouseStockDetailRepository; // table 
-        private readonly WarehouseStockInfoRepository warehouseStockInfoRepository; // table 
+        private readonly WarehouseStockDetailRepository warehouseStockDetailRepository; // repo 
+        private readonly WarehouseStockInfoRepository warehouseStockInfoRepository; // repo 
+        private readonly IRequsitionInfoBusiness _requsitionInfoBusiness; // BC
+        private readonly IRequsitionDetailBusiness _requsitionDetailBusiness; // BC
 
-        private readonly IRequsitionInfoBusiness _requsitionInfoBusiness; // table
-        private readonly IRequsitionDetailBusiness _requsitionDetailBusiness; // table
-        private readonly IProductionUnitOfWork _productionDb; // database;
-
-        public WarehouseStockDetailBusiness(IInventoryUnitOfWork inventoryDb, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IProductionUnitOfWork productionDb)
+        public WarehouseStockDetailBusiness(IInventoryUnitOfWork inventoryDb, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness , IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness)
         {
             this._inventoryDb = inventoryDb;
-            _itemBusiness = itemBusiness;
             warehouseStockDetailRepository = new WarehouseStockDetailRepository(this._inventoryDb);
-            _warehouseStockInfoBusiness = warehouseStockInfoBusiness;
             warehouseStockInfoRepository = new WarehouseStockInfoRepository(this._inventoryDb);
 
-            this._productionDb = productionDb;
-            _requsitionInfoBusiness = new RequsitionInfoBusiness(this._productionDb, this._inventoryDb);
-            _requsitionDetailBusiness = new RequsitionDetailBusiness(this._productionDb);
+            _warehouseStockInfoBusiness = warehouseStockInfoBusiness;
+            _itemBusiness = itemBusiness;
+            _requsitionInfoBusiness = requsitionInfoBusiness;
+            _requsitionDetailBusiness = requsitionDetailBusiness;
         }
         public IEnumerable<WarehouseStockDetail> GelAllWarehouseStockDetailByOrgId(long orgId)
         {

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ERPBO.ControlPanel.ViewModels.OrganizationViewModel>
+
+@{
+    ViewBag.Title = "List Of Organization";
+    int sl = 0;
+    string badge = string.Empty;
+}
+
+<div class="row">
+    <div class="col-md-12">
+
+    </div>
+    <div class="col-md-12">
+        <table class="table table-bordered table-striped table-responsive-lg">
+            <thead>
+                <tr>
+                    <th>SL</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl += 1;
+                    badge = (item.StateStatus == "Active" ? "badge bg-success" : "badge bg-danger");
+                    <tr>
+                        <td>
+                            @sl
+                        </td>
+                        <td>@item.OrganizationName</td>
+                        <td>@item.Address</td>
+                        <td>@item.PhoneNumber</td>
+                        <td>@item.MobileNumber</td>
+                        <td>@item.Email</td>
+                        <td>@item.Website</td>
+                        <td class="text-center" data-val="@item.StateStatus">
+                            <span class="@badge">@item.StateStatus</span>
+                        </td>
+                        <td>
+                            @item.EntryDate.Value.ToString("dd-MMM-yyyy")
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
