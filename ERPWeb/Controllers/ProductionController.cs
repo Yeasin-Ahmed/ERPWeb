@@ -93,8 +93,11 @@ namespace ERPWeb.Controllers
             ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(ware => new SelectListItem { Text = ware.WarehouseName, Value = ware.Id.ToString() }).ToList();
 
             ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(line => new SelectListItem { Text = line.DescriptionName, Value = line.DescriptionId.ToString() }).ToList();
 
-            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status => status.value != RequisitionStatus.Pending).Select(st => new SelectListItem
+            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status => 1==1
+            //status.value != RequisitionStatus.Pending
+            ).Select(st => new SelectListItem
             {
                 Text = st.text,
                 Value = st.value
@@ -105,8 +108,10 @@ namespace ERPWeb.Controllers
         public ActionResult CreateRequsition()
         {
             ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(line => new SelectListItem { Text = line.WarehouseName, Value = line.Id.ToString() }).ToList();
+
             ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
 
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(line => new SelectListItem { Text = line.DescriptionName, Value = line.DescriptionId.ToString() }).ToList();
             return View();
         }
 
@@ -131,14 +136,15 @@ namespace ERPWeb.Controllers
         }
 
         // Used By  GetReqInfoList ActionMethod
-        public ActionResult GetReqInfoParitalList(string reqCode,long? warehouseId,string status, long? line,string fromDate, string toDate,int? page)
+        public ActionResult GetReqInfoParitalList(string reqCode,long? warehouseId,string status, long? line,long? modelId,string fromDate, string toDate,int? page)
         {
             IPagedList<RequsitionInfoViewModel> requsitionInfoViewModels = _requsitionInfoBusiness.GetAllReqInfoByOrgId(OrgId).Where(req =>
-                req.StateStatus != RequisitionStatus.Pending &&
+                //req.StateStatus != RequisitionStatus.Pending &&
                 (reqCode == null || reqCode.Trim() == "" || req.ReqInfoCode.Contains(reqCode)) &&
                 (warehouseId == null || warehouseId <= 0 || req.WarehouseId == warehouseId) &&
                 (status == null || status.Trim() == "" || req.StateStatus == status.Trim()) &&
                 (line == null || line <= 0 || req.LineId == line) &&
+                (modelId==null || modelId <=0 || req.DescriptionId==modelId) &&
                 (
                     (fromDate == null && toDate == null)
                     ||
@@ -159,6 +165,8 @@ namespace ERPWeb.Controllers
                 ReqInfoCode = info.ReqInfoCode,
                 LineId = info.LineId,
                 LineNumber = (_productionLineBusiness.GetProductionLineOneByOrgId(info.LineId, OrgId).LineNumber),
+                DescriptionId=info.DescriptionId,
+                ModelName=(_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId,OrgId).DescriptionName),
                 StateStatus = info.StateStatus,
                 Remarks = info.Remarks,
                 OrganizationId = info.OrganizationId,

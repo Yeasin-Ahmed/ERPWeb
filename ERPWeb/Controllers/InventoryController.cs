@@ -32,11 +32,12 @@ namespace ERPWeb.Controllers
         private IProductionLineBusiness _productionLineBusiness;
         private IRequsitionInfoBusiness _requsitionInfoBusiness;
         private IRequsitionDetailBusiness _requsitionDetailBusiness;
+        private IDescriptionBusiness _descriptionBusiness;
 
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
 
-        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness)
+        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness,IDescriptionBusiness descriptionBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -47,6 +48,7 @@ namespace ERPWeb.Controllers
             this._productionLineBusiness = productionLineBusiness;
             this._requsitionInfoBusiness = requsitionInfoBusiness;
             this._requsitionDetailBusiness = requsitionDetailBusiness;
+            this._descriptionBusiness = descriptionBusiness;
         }
         // GET: Account
 
@@ -302,7 +304,13 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
 
-            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status => status.value == RequisitionStatus.Pending || status.value == RequisitionStatus.Accepted || status.value == RequisitionStatus.Rejected).Select(st => new SelectListItem
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(line => new SelectListItem { Text = line.DescriptionName, Value = line.DescriptionId.ToString() }).ToList();
+
+            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status => 1==1
+            
+            //status.value == RequisitionStatus.Pending || status.value == RequisitionStatus.Accepted || status.value == RequisitionStatus.Rejected
+            
+            ).Select(st => new SelectListItem
             {
                 Text = st.text,
                 Value = st.value
@@ -311,10 +319,10 @@ namespace ERPWeb.Controllers
         }
 
         // Used By  GetReqInfoList
-        public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? line, string fromDate, string toDate,int? page)
+        public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? line,long? modelId, string fromDate, string toDate,int? page)
         {
-            IPagedList<RequsitionInfoViewModel> requsitionInfoViewModels = _requsitionInfoBusiness.GetAllReqInfoByOrgId(OrgId).Where(req => (req.StateStatus == RequisitionStatus.Pending || req.StateStatus == RequisitionStatus.Accepted || req.StateStatus == RequisitionStatus.Rejected)
-                &&
+            IPagedList<RequsitionInfoViewModel> requsitionInfoViewModels = _requsitionInfoBusiness.GetAllReqInfoByOrgId(OrgId).Where(req => /*(req.StateStatus == RequisitionStatus.Pending || req.StateStatus == RequisitionStatus.Accepted || req.StateStatus == RequisitionStatus.Rejected)*/
+                //&&
                 (reqCode == null || reqCode.Trim() == "" || req.ReqInfoCode.Contains(reqCode))
                 &&
                 (warehouseId == null || warehouseId <= 0 || req.WarehouseId == warehouseId)
@@ -322,6 +330,8 @@ namespace ERPWeb.Controllers
                 (status == null || status.Trim() == "" || req.StateStatus == status.Trim())
                 &&
                 (line == null || line <= 0 || req.LineId == line)
+                &&
+                (modelId==null|| modelId<=0|| req.DescriptionId==modelId)
                 &&
                 (
                     (fromDate == null && toDate == null)
@@ -343,6 +353,8 @@ namespace ERPWeb.Controllers
                 ReqInfoCode = info.ReqInfoCode,
                 LineId = info.LineId,
                 LineNumber = (_productionLineBusiness.GetProductionLineOneByOrgId(info.LineId, OrgId).LineNumber),
+                DescriptionId = info.DescriptionId,
+                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId, OrgId).DescriptionName),
                 StateStatus = info.StateStatus,
                 Remarks = info.Remarks,
                 OrganizationId = info.OrganizationId,

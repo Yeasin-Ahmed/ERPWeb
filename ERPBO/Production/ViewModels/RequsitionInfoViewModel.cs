@@ -23,7 +23,10 @@ namespace ERPBO.Production.ViewModels
         public Nullable<DateTime> UpdateDate { get; set; }
         [Range(1, long.MaxValue)]
         public long WarehouseId { get; set; }
+        [Range(1, long.MaxValue)]
         public long LineId { get; set; }
+        [Range(1, long.MaxValue)]
+        public long DescriptionId { get; set; }
 
         //Custom
 
@@ -31,6 +34,7 @@ namespace ERPBO.Production.ViewModels
         public string WarehouseName { get; set; }
         [StringLength(100)]
         public string LineNumber { get; set; }
+        public string ModelName { get; set; }
         public int Qty { get; set; }
     }
 }

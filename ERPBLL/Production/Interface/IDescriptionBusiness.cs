@@ -10,5 +10,6 @@ namespace ERPBLL.Production.Interface
    public interface IDescriptionBusiness
     {
         IEnumerable<Description> GetDescriptionByOrgId(long orgId);
+        Description GetDescriptionOneByOrdId(long id, long orgId);
     }
 }

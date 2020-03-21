@@ -18,6 +18,7 @@ namespace ERPBLL.Production
         private readonly RequsitionInfoRepository requsitionInfoRepository; // table
         private readonly IItemBusiness itemBusiness; // interface
         private readonly IInventoryUnitOfWork _inventoryDb; // database
+        //private readonly IDescriptionBusiness descriptionBusiness;
 
         private readonly IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
         public RequsitionInfoBusiness(IProductionUnitOfWork productionDb, IInventoryUnitOfWork inventoryDb)
@@ -27,6 +28,7 @@ namespace ERPBLL.Production
             this._inventoryDb = inventoryDb;
             _warehouseStockInfoBusiness = new WarehouseStockInfoBusiness(this._inventoryDb);
             itemBusiness = new ItemBusiness(this._inventoryDb);
+           // descriptionBusiness = new DescriptionBusiness(this._inventoryDb);
         }
 
         public IEnumerable<RequsitionInfo> GetAllReqInfoByOrgId(long orgId)
@@ -44,6 +46,7 @@ namespace ERPBLL.Production
             RequsitionInfo requsitionInfo = new RequsitionInfo();
             requsitionInfo.WarehouseId = reqInfoDTO.WarehouseId.Value;
             requsitionInfo.LineId = reqInfoDTO.LineId.Value;
+            requsitionInfo.DescriptionId = reqInfoDTO.DescriptionId;
             requsitionInfo.OrganizationId = orgId;
             requsitionInfo.StateStatus = RequisitionStatus.Pending;
             requsitionInfo.ReqInfoCode =("REQ-"+ DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));

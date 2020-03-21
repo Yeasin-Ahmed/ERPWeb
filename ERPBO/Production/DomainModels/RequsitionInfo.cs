@@ -24,5 +24,6 @@ namespace ERPBO.Production.DomainModels
         public ICollection<RequsitionDetail> RequsitionDetails { get; set; }
         public long WarehouseId { get; set; }
         public long LineId { get; set; }
+        public long DescriptionId { get; set; }
     }
 }
