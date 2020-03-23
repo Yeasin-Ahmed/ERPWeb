@@ -63,7 +63,7 @@ namespace ERPWeb.Controllers
                 Remarks = ware.Remarks,
                 StateStatus = (ware.IsActive == true ? "Active" : "Inactive"),
                 OrganizationId = ware.OrganizationId
-            }).OrderBy(p => p.Id).ToPagedList(page ?? 1, 3);
+            }).OrderBy(p => p.Id).ToPagedList(page ?? 1, 15);
             IEnumerable<WarehouseViewModel> warehouseViewModelForPage = new List<WarehouseViewModel>();
             //List<WarehouseViewModel> warehouseViewModels = new List<WarehouseViewModel>();
             //AutoMapper.Mapper.Map(warehousesDomains, warehouseViewModels);
@@ -106,7 +106,7 @@ namespace ERPWeb.Controllers
                 StateStatus = (item.IsActive == true ? "Active" : "Inactive"),
                 OrganizationId = item.OrganizationId,
                 WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(item.WarehouseId, OrgId).WarehouseName)
-            }).OrderBy(p => p.ItemId).ToPagedList(page ?? 1, 3);
+            }).OrderBy(p => p.ItemId).ToPagedList(page ?? 1, 15);
             IEnumerable<ItemTypeViewModel> itemTypeViewModelForPage = new List<ItemTypeViewModel>();
             //List<ItemTypeViewModel> itemTypeViewModels = new List<ItemTypeViewModel>();
             //AutoMapper.Mapper.Map(itemTypesDomains, itemTypeViewModels);
@@ -143,7 +143,7 @@ namespace ERPWeb.Controllers
                 UnitSymbol = unit.UnitSymbol,
                 Remarks = unit.Remarks,
                 OrganizationId = unit.OrganizationId
-            }).OrderBy(p => p.UnitId).ToPagedList(page ?? 1, 3);
+            }).OrderBy(p => p.UnitId).ToPagedList(page ?? 1, 15);
             IEnumerable<UnitViewModel> unitViewModelForPage = new List<UnitViewModel>();
             //List<UnitViewModel> unitViewModels = new List<UnitViewModel>();
             //AutoMapper.Mapper.Map(unitDomains, unitViewModels);
@@ -188,7 +188,7 @@ namespace ERPWeb.Controllers
                 ItemTypeName = _itemTypeBusiness.GetItemType(item.ItemTypeId, OrgId).ItemName,
                 UnitId = item.UnitId,
                 UnitName = _unitBusiness.GetUnitOneByOrgId(item.UnitId, OrgId).UnitName
-            }).OrderBy(p=>p.ItemId).ToPagedList(page?? 1,3);
+            }).OrderBy(p=>p.ItemId).ToPagedList(page?? 1,15);
             IEnumerable<ItemViewModel> itemViewModelsForPage = new List<ItemViewModel>();
 
             //IPagedList<ItemViewModel> itemViewModels = new PagedList<ItemViewModel>(itemViewModelsForPage, page ?? 1, 3);
@@ -259,7 +259,7 @@ namespace ERPWeb.Controllers
                 OrganizationId = info.OrganizationId,
             }).AsEnumerable();
 
-            warehouseStockInfoDTO = warehouseStockInfoDTO.Where(ws => (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId) && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)).OrderBy(p => p.StockInfoId).ToPagedList(page ?? 1, 3);
+            warehouseStockInfoDTO = warehouseStockInfoDTO.Where(ws => (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId) && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)).OrderBy(p => p.StockInfoId).ToPagedList(page ?? 1, 15);
            //List<WarehouseStockInfoViewModel> warehouseStockInfoViews = new List<WarehouseStockInfoViewModel>();
            //AutoMapper.Mapper.Map(warehouseStockInfoDTO, warehouseStockInfoViews);
             return PartialView("_WarehouseStockInfoList", warehouseStockInfoDTO);
@@ -362,7 +362,7 @@ namespace ERPWeb.Controllers
                 WarehouseId = info.WarehouseId,
                 WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId, OrgId).WarehouseName),
                 Qty = _requsitionDetailBusiness.GetRequsitionDetailByReqId(info.ReqInfoId, OrgId).Select(s => s.ItemId).Distinct().Count(),
-            }).OrderBy(p => p.ReqInfoId).ToPagedList(page ?? 1, 3);
+            }).OrderBy(p => p.ReqInfoId).ToPagedList(page ?? 1, 15);
             IEnumerable<RequsitionInfoViewModel> requsitionInfoViewModelForPage = new List<RequsitionInfoViewModel>();
 
            // List<RequsitionInfoViewModel> requsitionInfoViewModels = new List<RequsitionInfoViewModel>();
