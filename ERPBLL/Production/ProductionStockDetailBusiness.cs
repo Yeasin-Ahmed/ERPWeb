@@ -60,8 +60,9 @@ namespace ERPBLL.Production
                 stockDetail.EntryDate = DateTime.Now;
                 stockDetail.StockStatus = StockStatus.StockIn;
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
+                stockDetail.LineId = item.LineId;
 
-                var productionInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId).FirstOrDefault();
+                var productionInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId).FirstOrDefault();
                 if (productionInfo != null)
                 {
                     productionInfo.StockInQty += item.Quantity;
@@ -70,6 +71,7 @@ namespace ERPBLL.Production
                 else
                 {
                     ProductionStockInfo productionStockInfo = new ProductionStockInfo();
+                    productionStockInfo.LineId = item.LineId;
                     productionStockInfo.WarehouseId = item.WarehouseId;
                     productionStockInfo.ItemTypeId = item.ItemTypeId;
                     productionStockInfo.ItemId = item.ItemId;
@@ -110,7 +112,8 @@ namespace ERPBLL.Production
                         StockStatus = StockStatus.StockIn,
                         Remarks = item.Remarks,
                         Quantity = (int)item.Quantity.Value,
-                        RefferenceNumber = reqInfo.ReqInfoCode
+                        RefferenceNumber = reqInfo.ReqInfoCode,
+                        LineId = reqInfo.LineId
                     };
                     productionStockDetailDTOs.Add(productionStockDetailDTO);
                 }

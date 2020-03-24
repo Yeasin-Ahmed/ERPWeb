@@ -11,6 +11,8 @@ namespace ERPBO.Production.DTOModel
     {
         public long StockDetailId { get; set; }
         [Range(1, long.MaxValue)]
+        public long? LineId { get; set; }
+        [Range(1, long.MaxValue)]
         public long? WarehouseId { get; set; }
         [Range(1, long.MaxValue)]
         public long? ItemTypeId { get; set; }
@@ -45,5 +47,7 @@ namespace ERPBO.Production.DTOModel
 
         [StringLength(150)]
         public string StockStatus { get; set; }
+        [StringLength(100)]
+        public string LineNumber { get; set; }
     }
 }

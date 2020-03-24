@@ -151,10 +151,12 @@
     <Content Include="Content\dist\img\user2-160x160.jpg" />
     <Content Include="Content\dist\js\adminlte.js" />
     <Content Include="Content\dist\js\adminlte.min.js" />
+    <Content Include="Content\Images\noImage.jpg" />
     <Content Include="Content\plugins\bootstrap\js\bootstrap.bundle.js" />
     <Content Include="Content\plugins\bootstrap\js\bootstrap.bundle.min.js" />
     <Content Include="Content\plugins\bootstrap\js\bootstrap.js" />
     <Content Include="Content\plugins\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Content\plugins\bs-custom-file-input\bs-custom-file-input.js" />
     <Content Include="Content\plugins\fontawesome-free\css\all.css" />
     <Content Include="Content\plugins\fontawesome-free\css\all.min.css" />
     <Content Include="Content\plugins\fontawesome-free\css\fontawesome.css" />
@@ -195,6 +197,7 @@
     <Content Include="Content\plugins\fontawesome-free\webfonts\fa-solid-900.woff2" />
     <Content Include="Content\dist\css\bootstrap-datepicker3.css.map" />
     <Content Include="Content\plugins\Toastr\toastr.js.map" />
+    <Content Include="Content\plugins\bs-custom-file-input\bs-custom-file-input.js.map" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -263,6 +266,7 @@
     <Content Include="Views\Production\GetProductionStockInfoList.cshtml" />
     <Content Include="Views\Production\_ProductionStockInfoList.cshtml" />
     <Content Include="Views\ControlPanel\GetOrganizations.cshtml" />
+    <Content Include="Views\ControlPanel\CreateOrganization.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace ERPBO.ControlPanel.DTOModels
 {
@@ -38,5 +39,7 @@ namespace ERPBO.ControlPanel.DTOModels
         public Nullable<DateTime> UpdateDate { get; set; }
         // Custom Prop
         public string StateStatus { get; set; }
+        public HttpPostedFileBase OrgImage { get; set; }
+        public HttpPostedFileBase ReportImage { get; set; }
     }
 }

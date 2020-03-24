@@ -63,11 +63,20 @@
     <Compile Include="ControlPanelDAL\IControlPanelUnitOfWork.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelBaseRepository.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelUnitOfWork.cs" />
+    <Compile Include="InventoryContextMigrations\202003220458498_InventoryAllEntities_22-Mar-2020.cs" />
+    <Compile Include="InventoryContextMigrations\202003220458498_InventoryAllEntities_22-Mar-2020.Designer.cs">
+      <DependentUpon>202003220458498_InventoryAllEntities_22-Mar-2020.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
-    <Compile Include="ProductionContextMigrations\202003150420259_ProductionAllEntities.cs" />
-    <Compile Include="ProductionContextMigrations\202003150420259_ProductionAllEntities.Designer.cs">
-      <DependentUpon>202003150420259_ProductionAllEntities.cs</DependentUpon>
+    <Compile Include="ProductionContextMigrations\202003220520455_ProductionAllEntities_22-Mar-2020.cs" />
+    <Compile Include="ProductionContextMigrations\202003220520455_ProductionAllEntities_22-Mar-2020.Designer.cs">
+      <DependentUpon>202003220520455_ProductionAllEntities_22-Mar-2020.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202003241113399_ProductionStockLineId.cs" />
+    <Compile Include="ProductionContextMigrations\202003241113399_ProductionStockLineId.Designer.cs">
+      <DependentUpon>202003241113399_ProductionStockLineId.cs</DependentUpon>
     </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
@@ -99,8 +108,14 @@
     <EmbeddedResource Include="ControlPanelContextMigrations\202003160834191_UpdateOrgAddBranchAndUser.resx">
       <DependentUpon>202003160834191_UpdateOrgAddBranchAndUser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202003150420259_ProductionAllEntities.resx">
-      <DependentUpon>202003150420259_ProductionAllEntities.cs</DependentUpon>
+    <EmbeddedResource Include="InventoryContextMigrations\202003220458498_InventoryAllEntities_22-Mar-2020.resx">
+      <DependentUpon>202003220458498_InventoryAllEntities_22-Mar-2020.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202003220520455_ProductionAllEntities_22-Mar-2020.resx">
+      <DependentUpon>202003220520455_ProductionAllEntities_22-Mar-2020.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202003241113399_ProductionStockLineId.resx">
+      <DependentUpon>202003241113399_ProductionStockLineId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

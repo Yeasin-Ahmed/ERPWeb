@@ -1,7 +1,10 @@
+using ERPBLL.ControlPanel;
+using ERPBLL.ControlPanel.Interface;
 using ERPBLL.Inventory;
 using ERPBLL.Inventory.Interface;
 using ERPBLL.Production;
 using ERPBLL.Production.Interface;
+using ERPDAL.ControlPanelDAL;
 using ERPDAL.InventoryDAL;
 using ERPDAL.ProductionDAL;
 using System.Web.Mvc;
@@ -35,6 +38,11 @@ namespace ERPWeb
             container.RegisterType<IProductionStockDetailBusiness, ProductionStockDetailBusiness>();
             container.RegisterType<IProductionStockInfoBusiness, ProductionStockInfoBusiness>();
             container.RegisterType<IProductionUnitOfWork, ProductionUnitOfWork>();
+
+
+            // Control Panel Database
+            container.RegisterType<IOrganizationBusiness, OrganizationBusiness>();
+            container.RegisterType<IControlPanelUnitOfWork, ControlPanelUnitOfWork>();
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }

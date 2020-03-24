@@ -1,4 +1,5 @@
-﻿using ERPBLL.ControlPanel.Interface;
+﻿using ERPBLL.Common;
+using ERPBLL.ControlPanel.Interface;
 using ERPBO.ControlPanel.DomainModels;
 using ERPBO.ControlPanel.DTOModels;
 using ERPDAL.ControlPanelDAL;
@@ -13,8 +14,7 @@ namespace ERPBLL.ControlPanel
     public class OrganizationBusiness:IOrganizationBusiness // Business Class //
     {
         private readonly IControlPanelUnitOfWork _controlPanelUnitOfWork; // database
-        private readonly OrganizationRepository _organizationRepository; // table
-
+        private readonly OrganizationRepository _organizationRepository; // repo
         public OrganizationBusiness(IControlPanelUnitOfWork controlPanelUnitOfWork)
         {
             this._controlPanelUnitOfWork = controlPanelUnitOfWork;
@@ -51,6 +51,14 @@ namespace ERPBLL.ControlPanel
                     EUserId = userId,
                     EntryDate = DateTime.Now
                 };
+                if (org.OrgImage != null)
+                {
+                    org.OrgLogoPath = Utility.SaveImage(org.OrgImage.InputStream, org.OrgImage.FileName, Utility.OrgLogoPath, org.OrgId);
+                }
+                if (org.ReportImage != null)
+                {
+                    org.ReportLogoPath = Utility.SaveImage(org.ReportImage.InputStream, org.ReportImage.FileName, Utility.ReportLogoPath, org.OrgId);
+                }
                 _organizationRepository.Insert(organization);
             }
             else
@@ -70,6 +78,14 @@ namespace ERPBLL.ControlPanel
                     orgInDb.IsActive = org.IsActive;
                     orgInDb.UpUserId = userId;
                     orgInDb.UpdateDate = DateTime.Now;
+                    if (org.OrgImage != null)
+                    {
+                        orgInDb.OrgLogoPath = Utility.SaveImage(org.OrgImage.InputStream, org.OrgImage.FileName, Utility.OrgLogoPath, org.OrgId);
+                    }
+                    if (org.ReportImage != null)
+                    {
+                        orgInDb.ReportLogoPath = Utility.SaveImage(org.ReportImage.InputStream, org.ReportImage.FileName, Utility.ReportLogoPath, org.OrgId);
+                    }
                     _organizationRepository.Update(orgInDb);
                 }
             }

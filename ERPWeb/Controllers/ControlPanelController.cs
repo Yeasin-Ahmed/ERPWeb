@@ -1,6 +1,7 @@
 ﻿using ERPBLL.ControlPanel.Interface;
 using ERPBO.ControlPanel.DTOModels;
 using ERPBO.ControlPanel.ViewModels;
+using ERPWeb.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace ERPWeb.Controllers
     public class ControlPanelController : Controller
     {
         private readonly IOrganizationBusiness _organizationBusiness;
+        private readonly long UserId = 1;
+        private readonly long OrgId = 1;
         public ControlPanelController(IOrganizationBusiness organizationBusiness)
         {
             this._organizationBusiness = organizationBusiness;
@@ -41,6 +44,44 @@ namespace ERPWeb.Controllers
             List<OrganizationViewModel> OrganizationViewModels = new List<OrganizationViewModel>();
             AutoMapper.Mapper.Map(organizationDTOs, OrganizationViewModels);
             return View(OrganizationViewModels);
+        }
+
+        [HttpGet]                                                
+        public ActionResult CreateOrganization(long? oId)
+        {
+            OrganizationViewModel organizationViewModel = new OrganizationViewModel();
+            string pageTitle = string.Empty;
+            pageTitle = "Create New Organization";
+            if (oId != null && oId > 0)
+            {
+                var Org = _organizationBusiness.GetOrganizationById(oId.Value);
+                organizationViewModel.OrgId = Org.OrgId;
+                organizationViewModel.OrganizationName = Org.OrganizationName;
+                organizationViewModel.Address = Org.Address;
+                organizationViewModel.PhoneNumber = Org.PhoneNumber;
+                organizationViewModel.MobileNumber = Org.MobileNumber;
+                organizationViewModel.Email = Org.Email;
+                organizationViewModel.Website = Org.Website;
+                organizationViewModel.IsActive = Org.IsActive;
+                organizationViewModel.Fax = Org.Fax;
+                organizationViewModel.ShortName = Org.ShortName;
+                pageTitle = "Update Organization";
+            }
+            ViewBag.PageTitle = pageTitle;
+            return View(organizationViewModel);
+        }
+
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult SaveOrganization(OrganizationViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                OrganizationDTO dto = new OrganizationDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _organizationBusiness.SaveOrganization(dto,UserId);
+            }
+            return Json(IsSuccess);
         }
     }
 }
