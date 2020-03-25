@@ -40,6 +40,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,6 +50,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Dropdown.cs" />
+    <Compile Include="ControlPanel\DomainModels\Branch.cs" />
+    <Compile Include="ControlPanel\DomainModels\AppUser.cs" />
+    <Compile Include="ControlPanel\DTOModels\AppUserDTO.cs" />
+    <Compile Include="ControlPanel\DTOModels\BranchDTO.cs" />
+    <Compile Include="ControlPanel\DTOModels\OrganizationDTO.cs" />
+    <Compile Include="ControlPanel\ViewModels\AppUserViewModel.cs" />
+    <Compile Include="ControlPanel\ViewModels\BranchViewModel.cs" />
+    <Compile Include="ControlPanel\ViewModels\OrganizationViewModel.cs" />
     <Compile Include="Inventory\DomainModels\WarehouseStockDetail.cs" />
     <Compile Include="Inventory\DomainModels\WarehouseStockInfo.cs" />
     <Compile Include="Inventory\DTOModel\ItemDomainModel.cs" />
@@ -96,7 +105,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ControlPanel\ReportModels\" />
-    <Folder Include="ControlPanel\ViewModels\" />
     <Folder Include="Inventory\ReportModels\" />
     <Folder Include="Production\ReportModels\" />
   </ItemGroup>

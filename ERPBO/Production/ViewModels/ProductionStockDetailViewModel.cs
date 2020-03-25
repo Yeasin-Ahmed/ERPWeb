@@ -11,6 +11,8 @@ namespace ERPBO.Production.ViewModels
     {
         public long StockDetailId { get; set; }
         [Range(1, long.MaxValue)]
+        public long? LineId { get; set; }
+        [Range(1, long.MaxValue)]
         public long? WarehouseId { get; set; }
         [Range(1, long.MaxValue)]
         public long? LineId { get; set; }

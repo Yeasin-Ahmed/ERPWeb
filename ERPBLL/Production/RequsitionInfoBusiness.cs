@@ -14,21 +14,24 @@ namespace ERPBLL.Production
 {
    public class RequsitionInfoBusiness: IRequsitionInfoBusiness
     {
+        /// <summary>
+        ///  BC Stands for          - Business Class
+        ///  db Stands for          - Database
+        ///  repo Stands for        - Repository
+        /// </summary>
         private readonly IProductionUnitOfWork _productionDb; // database
         private readonly RequsitionInfoRepository requsitionInfoRepository; // table
-        private readonly IItemBusiness itemBusiness; // interface
         private readonly IInventoryUnitOfWork _inventoryDb; // database
-        //private readonly IDescriptionBusiness descriptionBusiness;
+        private readonly IItemBusiness _itemBusiness; // interface
 
         private readonly IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
-        public RequsitionInfoBusiness(IProductionUnitOfWork productionDb, IInventoryUnitOfWork inventoryDb)
+        public RequsitionInfoBusiness(IProductionUnitOfWork productionDb, IInventoryUnitOfWork inventoryDb, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IItemBusiness itemBusiness)
         {
             this._productionDb = productionDb;
             requsitionInfoRepository = new RequsitionInfoRepository(this._productionDb);
             this._inventoryDb = inventoryDb;
-            _warehouseStockInfoBusiness = new WarehouseStockInfoBusiness(this._inventoryDb);
-            itemBusiness = new ItemBusiness(this._inventoryDb);
-           // descriptionBusiness = new DescriptionBusiness(this._inventoryDb);
+            this._warehouseStockInfoBusiness = warehouseStockInfoBusiness;
+            this._itemBusiness = itemBusiness;
         }
 
         public IEnumerable<RequsitionInfo> GetAllReqInfoByOrgId(long orgId)
@@ -46,7 +49,6 @@ namespace ERPBLL.Production
             RequsitionInfo requsitionInfo = new RequsitionInfo();
             requsitionInfo.WarehouseId = reqInfoDTO.WarehouseId.Value;
             requsitionInfo.LineId = reqInfoDTO.LineId.Value;
-            requsitionInfo.DescriptionId = reqInfoDTO.DescriptionId;
             requsitionInfo.OrganizationId = orgId;
             requsitionInfo.StateStatus = RequisitionStatus.Pending;
             requsitionInfo.ReqInfoCode =("REQ-"+ DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
@@ -61,7 +63,7 @@ namespace ERPBLL.Production
                 requsitionDetail.ItemTypeId = item.ItemTypeId;
                 requsitionDetail.ItemId = item.ItemId;
                 requsitionDetail.Quantity = item.Quantity;
-                requsitionDetail.UnitId = itemBusiness.GetItemOneByOrgId(item.ItemId.Value, orgId).UnitId;
+                requsitionDetail.UnitId = _itemBusiness.GetItemOneByOrgId(item.ItemId.Value, orgId).UnitId;
                 requsitionDetail.Remarks = item.Remarks;
                 requsitionDetail.EUserId = userId;
                 requsitionDetail.EntryDate = DateTime.Now;

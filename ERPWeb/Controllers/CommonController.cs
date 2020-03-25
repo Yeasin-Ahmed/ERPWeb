@@ -11,13 +11,13 @@ namespace ERPWeb.Controllers
 
     public class CommonController : BaseController
     {
-        IWarehouseBusiness _warehouseBusiness;
-        IItemTypeBusiness _itemTypeBusiness;
-        IUnitBusiness _unitBusiness;
-        IItemBusiness _itemBusiness;
-        IRequsitionInfoBusiness _requsitionInfoBusiness;
-        IRequsitionDetailBusiness _requsitionDetailBusiness;
-        IProductionLineBusiness _productionLineBusiness;
+        private readonly IWarehouseBusiness _warehouseBusiness;
+        private readonly IItemTypeBusiness _itemTypeBusiness;
+        private readonly IUnitBusiness _unitBusiness;
+        private readonly IItemBusiness _itemBusiness;
+        private readonly IRequsitionInfoBusiness _requsitionInfoBusiness;
+        private readonly IRequsitionDetailBusiness _requsitionDetailBusiness;
+        private readonly IProductionLineBusiness _productionLineBusiness;
 
         private readonly long UserId = 1;
         private readonly long OrgId = 1;

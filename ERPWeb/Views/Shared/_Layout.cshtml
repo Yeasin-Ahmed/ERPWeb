@@ -193,7 +193,23 @@
                                     </p>
                                 </a>
                             </li>*@
-
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-list"></i>
+                                <p>
+                                    Control Panel
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="/ControlPanel/GetOrganizations" class="nav-link">
+                                        <i class="fas fa-circle fa-1x nav-icon"></i>
+                                        <p>Organization List</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-list"></i>
@@ -346,8 +362,14 @@
     <script src="~/Scripts/dataTables.bootstrap4.js"></script>
     <script src="~/Content/plugins/Toastr/toastr.min.js"></script>
     <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    <script src="~/Content/plugins/bs-custom-file-input/bs-custom-file-input.js"></script>
     <script src="~/Scripts/site.js"></script>
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+        })
+    </script>
     <script type="text/javascript">
         $(function () {
             //const Toast = Swal.mixin({
@@ -514,7 +536,6 @@
             });
         });
     </script>
-
     @RenderSection("scripts", false)
 
 </body>

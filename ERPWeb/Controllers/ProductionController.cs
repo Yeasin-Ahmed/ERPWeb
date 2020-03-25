@@ -242,6 +242,8 @@ namespace ERPWeb.Controllers
             IEnumerable<ProductionStockInfoDTO> productionStockInfoDTO = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(OrgId).Select(info => new ProductionStockInfoDTO
             {
                 StockInfoId = info.ProductionStockInfoId,
+                LineId = info.LineId.Value,
+                LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(info.LineId.Value,OrgId).LineNumber,
                 WarehouseId = info.WarehouseId,
                 Warehouse = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, OrgId).WarehouseName),
                 LineId=info.LineId.Value,
