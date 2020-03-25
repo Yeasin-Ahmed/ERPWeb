@@ -14,6 +14,7 @@ namespace ERPBO.Production.DomainModels
         [Key]
         public long StockDetailId { get; set; }
         public long? WarehouseId { get; set; }
+        public long? LineId { get; set; }
         public long? ItemTypeId { get; set; }
         public long? ItemId { get; set; }
         public long? UnitId { get; set; }

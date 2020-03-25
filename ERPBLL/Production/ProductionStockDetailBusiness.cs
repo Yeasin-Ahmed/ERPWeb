@@ -48,6 +48,7 @@ namespace ERPBLL.Production
             {
                 ProductionStockDetail stockDetail = new ProductionStockDetail();
                 stockDetail.WarehouseId = item.WarehouseId;
+                stockDetail.LineId = item.LineId;
                 stockDetail.ItemTypeId = item.ItemTypeId;
                 stockDetail.ItemId = item.ItemId;
                 stockDetail.Quantity = item.Quantity;
@@ -59,7 +60,7 @@ namespace ERPBLL.Production
                 stockDetail.StockStatus = StockStatus.StockIn;
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
 
-                var productionInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId).FirstOrDefault();
+                var productionInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId).FirstOrDefault();
                 if (productionInfo != null)
                 {
                     productionInfo.StockInQty += item.Quantity;
@@ -69,6 +70,7 @@ namespace ERPBLL.Production
                 {
                     ProductionStockInfo productionStockInfo = new ProductionStockInfo();
                     productionStockInfo.WarehouseId = item.WarehouseId;
+                    productionInfo.LineId = item.LineId;
                     productionStockInfo.ItemTypeId = item.ItemTypeId;
                     productionStockInfo.ItemId = item.ItemId;
                     productionStockInfo.UnitId = stockDetail.UnitId;
@@ -100,6 +102,7 @@ namespace ERPBLL.Production
                     ProductionStockDetailDTO productionStockDetailDTO = new ProductionStockDetailDTO
                     {
                         WarehouseId = reqInfo.WarehouseId,
+                        LineId = reqInfo.LineId,
                         ItemTypeId = item.ItemTypeId,
                         ItemId = item.ItemId,
                         OrganizationId = orgId,

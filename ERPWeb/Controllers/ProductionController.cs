@@ -227,17 +227,25 @@ namespace ERPWeb.Controllers
                 Text = ware.WarehouseName,
                 Value = ware.Id.ToString()
             }).ToList();
+
+            ViewBag.ddlProductionLine = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem
+            {
+                Text = line.LineNumber,
+                Value = line.LineId.ToString()
+            }).ToList();
             return View();
         }
 
         [HttpGet]
-        public ActionResult GetProductionStockInfoPartialList(long? WarehouseId, long? ItemTypeId, long? ItemId, int? page)
+        public ActionResult GetProductionStockInfoPartialList(long? WarehouseId,long? LineId, long? ItemTypeId, long? ItemId, int? page)
         {
             IEnumerable<ProductionStockInfoDTO> productionStockInfoDTO = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(OrgId).Select(info => new ProductionStockInfoDTO
             {
                 StockInfoId = info.ProductionStockInfoId,
                 WarehouseId = info.WarehouseId,
                 Warehouse = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, OrgId).WarehouseName),
+                LineId=info.LineId.Value,
+                LineNumber=(_productionLineBusiness.GetProductionLineOneByOrgId(info.LineId.Value,OrgId).LineNumber),
                 ItemTypeId = info.ItemTypeId,
                 ItemType = (_itemTypeBusiness.GetItemType(info.ItemTypeId.Value, OrgId).ItemName),
                 ItemId = info.ItemId,
@@ -250,7 +258,7 @@ namespace ERPWeb.Controllers
                 OrganizationId = info.OrganizationId,
             }).AsEnumerable();
 
-            productionStockInfoDTO = productionStockInfoDTO.Where(ws => (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId) && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)).OrderBy(p => p.StockInfoId).ToPagedList(page ?? 1, 15);
+            productionStockInfoDTO = productionStockInfoDTO.Where(ws => (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId)&&(LineId==null||LineId==0||ws.LineId==LineId) && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)).OrderBy(p => p.StockInfoId).ToPagedList(page ?? 1, 15);
 
             // List<ProductionStockInfoViewModel> productionStockInfoViews = new List<ProductionStockInfoViewModel>();
             //AutoMapper.Mapper.Map(productionStockInfoDTO, productionStockInfoViews);
