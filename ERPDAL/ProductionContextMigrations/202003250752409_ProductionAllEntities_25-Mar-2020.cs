@@ -3,10 +3,27 @@ namespace ERPDAL.ProductionContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ProductionAllEntities_22Mar2020 : DbMigration
+    public partial class ProductionAllEntities_25Mar2020 : DbMigration
     {
         public override void Up()
         {
+            CreateTable(
+                "dbo.tblDescriptions",
+                c => new
+                    {
+                        DescriptionId = c.Long(nullable: false, identity: true),
+                        DescriptionName = c.String(),
+                        SubCategoryId = c.Long(),
+                        Remarks = c.String(),
+                        IsActive = c.Boolean(nullable: false),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.DescriptionId);
+            
             CreateTable(
                 "dbo.tblProductionLines",
                 c => new
@@ -29,6 +46,7 @@ namespace ERPDAL.ProductionContextMigrations
                 c => new
                     {
                         StockDetailId = c.Long(nullable: false, identity: true),
+                        LineId = c.Long(),
                         WarehouseId = c.Long(),
                         ItemTypeId = c.Long(),
                         ItemId = c.Long(),
@@ -54,6 +72,7 @@ namespace ERPDAL.ProductionContextMigrations
                 c => new
                     {
                         ProductionStockInfoId = c.Long(nullable: false, identity: true),
+                        LineId = c.Long(),
                         WarehouseId = c.Long(),
                         ItemTypeId = c.Long(),
                         ItemId = c.Long(),
@@ -121,6 +140,7 @@ namespace ERPDAL.ProductionContextMigrations
             DropTable("dbo.tblProductionStockInfo");
             DropTable("dbo.tblProductionStockDetail");
             DropTable("dbo.tblProductionLines");
+            DropTable("dbo.tblDescriptions");
         }
     }
 }

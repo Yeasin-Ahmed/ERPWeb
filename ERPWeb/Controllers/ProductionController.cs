@@ -5,6 +5,7 @@ using ERPBO.Inventory.DTOModel;
 using ERPBO.Production.DTOModel;
 using ERPBO.Production.ViewModels;
 using ERPWeb.Filters;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,10 +26,11 @@ namespace ERPWeb.Controllers
         private IItemBusiness _itemBusiness;
         private IItemTypeBusiness _itemTypeBusiness;
         private IUnitBusiness _unitBusiness;
+        private IDescriptionBusiness _descriptionBusiness;
 
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
-        public ProductionController(IRequsitionInfoBusiness requsitionInfoBusiness,IWarehouseBusiness warehouseBusiness, IRequsitionDetailBusiness requsitionDetailBusiness,IProductionLineBusiness productionLineBusiness, IItemBusiness itemBusiness,IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IProductionStockDetailBusiness productionStockDetailBusiness, IProductionStockInfoBusiness productionStockInfoBusiness)
+        public ProductionController(IRequsitionInfoBusiness requsitionInfoBusiness,IWarehouseBusiness warehouseBusiness, IRequsitionDetailBusiness requsitionDetailBusiness,IProductionLineBusiness productionLineBusiness, IItemBusiness itemBusiness,IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IProductionStockDetailBusiness productionStockDetailBusiness, IProductionStockInfoBusiness productionStockInfoBusiness,IDescriptionBusiness descriptionBusiness)
         {
             this._requsitionInfoBusiness = requsitionInfoBusiness;
             this._warehouseBusiness = warehouseBusiness;
@@ -39,6 +41,7 @@ namespace ERPWeb.Controllers
             this._unitBusiness = unitBusiness;
             this._productionStockDetailBusiness = productionStockDetailBusiness;
             this._productionStockInfoBusiness = productionStockInfoBusiness;
+            this._descriptionBusiness = descriptionBusiness;
         }
 
         #region ProductionLine
@@ -240,6 +243,28 @@ namespace ERPWeb.Controllers
             List<ProductionStockInfoViewModel> productionStockInfoViews = new List<ProductionStockInfoViewModel>();
             AutoMapper.Mapper.Map(productionStockInfoDTO, productionStockInfoViews);
             return PartialView("_productionStockInfoList", productionStockInfoViews);
+        }
+        #endregion
+
+        #region Description
+        public ActionResult GetDescriptionList(int? page)
+        {
+            IPagedList<DescriptionViewModel> descriptionViewModels = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(des => new DescriptionViewModel
+            {
+                DescriptionId = des.DescriptionId,
+                DescriptionName = des.DescriptionName,
+                SubCategoryId = des.SubCategoryId,
+                StateStatus = (des.IsActive == true ? "Active" : "Inactive"),
+                Remarks = des.Remarks,
+                OrganizationId = des.OrganizationId,
+                EUserId = des.EUserId,
+                EntryDate = des.EntryDate,
+                UpUserId = des.UpUserId,
+                UpdateDate = des.UpdateDate
+
+            }).OrderBy(des => des.DescriptionId).ToPagedList(page ?? 1, 15);
+            IEnumerable<DescriptionViewModel> descriptionViewModelForPage = new List<DescriptionViewModel>();
+            return View(descriptionViewModels);
         }
         #endregion
 
