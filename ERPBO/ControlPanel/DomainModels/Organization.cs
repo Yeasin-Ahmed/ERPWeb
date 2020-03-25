@@ -27,6 +27,8 @@ namespace ERPBO.ControlPanel.DomainModels
         public string MobileNumber { get; set; }
         [StringLength(50)]
         public string Fax { get; set; }
+        [StringLength(100)]
+        public string Website { get; set; }
         public bool IsActive { get; set; }
         public Nullable<DateTime> ContractDate { get; set; }
         [StringLength(250)]
@@ -37,5 +39,6 @@ namespace ERPBO.ControlPanel.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public ICollection<Branch> Branches { get; set; }
     }
 }

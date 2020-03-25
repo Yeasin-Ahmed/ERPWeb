@@ -10,6 +10,8 @@ namespace ERPBO.Production.ViewModels
    public class ProductionStockInfoViewModel
     {
         public long StockInfoId { get; set; }
+        [Range(1, long.MaxValue)]
+        public long? LineId { get; set; }
         [Range(1,long.MaxValue)]
         public long? WarehouseId { get; set; }
         [Range(1, long.MaxValue)]
@@ -39,5 +41,7 @@ namespace ERPBO.Production.ViewModels
         public string Item { get; set; }
         [StringLength(100)]
         public string Unit { get; set; }
+        [StringLength(100)]
+        public string LineNumber { get; set; }
     }
 }

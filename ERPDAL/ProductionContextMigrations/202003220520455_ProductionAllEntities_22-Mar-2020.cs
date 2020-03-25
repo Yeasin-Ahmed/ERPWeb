@@ -3,7 +3,7 @@ namespace ERPDAL.ProductionContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ProductionAllEntities : DbMigration
+    public partial class ProductionAllEntities_22Mar2020 : DbMigration
     {
         public override void Up()
         {

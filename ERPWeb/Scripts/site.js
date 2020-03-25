@@ -661,7 +661,7 @@ function clearDropdown(eletementId) {
     //if ($("#" + eletementId + " option").length > 1)
     //if ($("#" + eletementId).children("option").length > 1)
     //{
-        $('#' + eletementId + ' option:not(:first)').remove();
+    $('#' + eletementId + ' option:not(:first)').remove();
     //}
 }
 
@@ -682,11 +682,44 @@ function ajaxValueChecker(data, url, token) {
         error: function (err) {
             console.log(err);
         }
-    })
+    });
     return returnVal;
 }
 
 
 function consoleLog(log) {
     console.log(log);
+}
+
+function readImg(file, elementId) {
+    console.log(file.id);
+    if (file.files && file.files[0] && file.files[0].name !== '') {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            elementId.attr("src", e.target.result);
+        };
+        reader.readAsDataURL(file.files[0]);
+    }
+    else {
+        elementId.attr("src", "/Images/no_image.png");
+    }
+}
+
+
+function postReqWithFile(dataType,type,url,data,token) {
+    return $.ajax({
+        dataType: dataType,
+        method: type,
+        url: url,
+        data: data,
+        processData: false,
+        contentType: false,
+        headers: token,
+        success: function (result) {
+            console.log(result);
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 }

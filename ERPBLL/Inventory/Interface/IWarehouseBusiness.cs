@@ -13,7 +13,6 @@ namespace ERPBLL.Inventory.Interface
         Task<bool> SaveAsync(WarehouseDTO warehouse, long UserId, long orgId);
         IEnumerable<dynamic> SqlQuery(string query);
         IEnumerable<dynamic> GetComplexData(long orgId);
-
         bool IsDuplicateWarehouseName(string warehouseName, long id, long orgId);
     }
 }

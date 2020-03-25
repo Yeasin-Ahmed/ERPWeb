@@ -12,8 +12,13 @@ namespace ERPBLL.Inventory
 {
    public class ItemTypeBusiness:IItemTypeBusiness
     {
+        /// <summary>
+        ///  BC Stands for          - Business Class
+        ///  db Stands for          - Database
+        ///  repo Stands for        - Repository
+        /// </summary>
         private readonly IInventoryUnitOfWork _inventoryDb; // database
-        private readonly ItemTypeRepository itemTypeRepository; // table
+        private readonly ItemTypeRepository itemTypeRepository; // repo
         public ItemTypeBusiness(IInventoryUnitOfWork inventoryDb)
         {
             this._inventoryDb = inventoryDb;
