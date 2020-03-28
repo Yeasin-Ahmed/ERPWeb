@@ -275,6 +275,8 @@
     <Content Include="Views\ControlPanel\GetOrganizations.cshtml" />
     <Content Include="Views\ControlPanel\CreateOrganization.cshtml" />
     <Content Include="Views\Production\GetDescriptionList.cshtml" />
+    <Content Include="Views\ControlPanel\GetBranchList.cshtml" />
+    <Content Include="Views\ControlPanel\GetRoleList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

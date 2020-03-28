@@ -20,12 +20,14 @@ namespace ERPBO.ControlPanel.DomainModels
         public string PhoneNo { get; set; }
         public string Fax { get; set; }
         public bool IsActive { get; set; }
+        [StringLength(150)]
+        public string Remarks { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         [ForeignKey("Organization")]
-        public long OrgId { get; set; }
+        public long OrganizationId { get; set; }
         public Organization Organization { get; set; }
         public ICollection<AppUser> AppUsers { get; set; }
     }

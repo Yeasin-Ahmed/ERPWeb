@@ -53,6 +53,14 @@
     <Compile Include="ControlPanelContextMigrations\202003250621418_ControlPanelAllEntities_25-Mar-2020.Designer.cs">
       <DependentUpon>202003250621418_ControlPanelAllEntities_25-Mar-2020.cs</DependentUpon>
     </Compile>
+    <Compile Include="ControlPanelContextMigrations\202003260452403_ControlPanelRenameOrgInBranch.cs" />
+    <Compile Include="ControlPanelContextMigrations\202003260452403_ControlPanelRenameOrgInBranch.Designer.cs">
+      <DependentUpon>202003260452403_ControlPanelRenameOrgInBranch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlPanelContextMigrations\202003280522254_ControlPaneltblRole.cs" />
+    <Compile Include="ControlPanelContextMigrations\202003280522254_ControlPaneltblRole.Designer.cs">
+      <DependentUpon>202003280522254_ControlPaneltblRole.cs</DependentUpon>
+    </Compile>
     <Compile Include="ControlPanelContextMigrations\Configuration.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelDbContext.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelRepository.cs" />
@@ -66,9 +74,9 @@
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
-    <Compile Include="ProductionContextMigrations\202003250752409_ProductionAllEntities_25-Mar-2020.cs" />
-    <Compile Include="ProductionContextMigrations\202003250752409_ProductionAllEntities_25-Mar-2020.Designer.cs">
-      <DependentUpon>202003250752409_ProductionAllEntities_25-Mar-2020.cs</DependentUpon>
+    <Compile Include="ProductionContextMigrations\202003251021340_ProductionAlEntities_25-Mar-2020.cs" />
+    <Compile Include="ProductionContextMigrations\202003251021340_ProductionAlEntities_25-Mar-2020.Designer.cs">
+      <DependentUpon>202003251021340_ProductionAlEntities_25-Mar-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
@@ -97,11 +105,17 @@
     <EmbeddedResource Include="ControlPanelContextMigrations\202003250621418_ControlPanelAllEntities_25-Mar-2020.resx">
       <DependentUpon>202003250621418_ControlPanelAllEntities_25-Mar-2020.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ControlPanelContextMigrations\202003260452403_ControlPanelRenameOrgInBranch.resx">
+      <DependentUpon>202003260452403_ControlPanelRenameOrgInBranch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlPanelContextMigrations\202003280522254_ControlPaneltblRole.resx">
+      <DependentUpon>202003280522254_ControlPaneltblRole.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202003220458498_InventoryAllEntities_22-Mar-2020.resx">
       <DependentUpon>202003220458498_InventoryAllEntities_22-Mar-2020.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202003250752409_ProductionAllEntities_25-Mar-2020.resx">
-      <DependentUpon>202003250752409_ProductionAllEntities_25-Mar-2020.cs</DependentUpon>
+    <EmbeddedResource Include="ProductionContextMigrations\202003251021340_ProductionAlEntities_25-Mar-2020.resx">
+      <DependentUpon>202003251021340_ProductionAlEntities_25-Mar-2020.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

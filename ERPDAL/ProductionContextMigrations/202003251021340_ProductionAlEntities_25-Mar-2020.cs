@@ -3,7 +3,7 @@ namespace ERPDAL.ProductionContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ProductionAllEntities_25Mar2020 : DbMigration
+    public partial class ProductionAlEntities_25Mar2020 : DbMigration
     {
         public override void Up()
         {
@@ -124,6 +124,7 @@ namespace ERPDAL.ProductionContextMigrations
                         UpdateDate = c.DateTime(),
                         WarehouseId = c.Long(nullable: false),
                         LineId = c.Long(nullable: false),
+                        DescriptionId = c.Long(nullable: false),
                     })
                 .PrimaryKey(t => t.ReqInfoId);
             
