@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ERPBO.Production.DomainModels
 {
-   [Table("tblDescriptions")]
+    [Table("tblDescriptions")]
    public class Description
-   {
+    {
         [Key]
         public long DescriptionId { get; set; }
         public string DescriptionName { get; set; }

@@ -16,8 +16,8 @@
                 @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
             </div>
             <div class="col-md-3">
-                <label for="ddlLineNumber" class="control-label font-weight-bold">LineNumber</label>
-                @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select LineNumber--", new { @class = "form-control form-control-sm" })
+                <label for="ddlProductionLine" class="control-label font-weight-bold">ProductionLine</label>
+                @Html.DropDownList("ddlProductionLine", (IEnumerable<SelectListItem>)ViewBag.ddlProductionLine, "--Select Production Line--", new { @class = "form-control form-control-sm" })
             </div>
             <div class="col-md-3">
                 <label for="ddlItemType" class="control-label font-weight-bold">Item Type Name</label>
@@ -42,7 +42,7 @@
 @section scripts{
     <script type="text/javascript">
         var ddlWarehouse = $("#ddlWarehouse");
-        var ddlLineNumber = $("#ddlLineNumber");
+        var ddlProductionLine = $("#ddlProductionLine");
         var ddlItemType = $("#ddlItemType");
         var ddlItem = $("#ddlItem");
         var txtInQuantity = $("#txtInQuantity");
@@ -79,15 +79,16 @@
             LoadDataTable();
         })
 
-        ddlItem.change(function () {
+        ddlProductionLine.change(function () {
             LoadDataTable();
         })
-        ddlLineNumber.change(function () {
+
+        ddlItem.change(function () {
             LoadDataTable();
         })
 
         function LoadDataTable() {
-            var data = { WarehouseId: TryParseInt(ddlWarehouse.val(), 0), LineId: TryParseInt(ddlLineNumber.val(), 0), ItemTypeId: TryParseInt(ddlItemType.val(), 0), ItemId: TryParseInt(ddlItem.val(),0) };
+            var data = { WarehouseId: TryParseInt(ddlWarehouse.val(), 0), LineId: TryParseInt(ddlProductionLine.val(), 0), ItemTypeId: TryParseInt(ddlItemType.val(), 0), ItemId: TryParseInt(ddlItem.val(),0) };
             $.when(getReqWithData('html', 'GET', '/Production/GetProductionStockInfoPartialList', data)).then(function (res,status) {
                 console.log(status);
                 if (status === "success") {

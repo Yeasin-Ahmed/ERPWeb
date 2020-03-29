@@ -33,8 +33,7 @@
         <div class="row">
             <div class="col-md-3">
                 <label for="ddlModelName" class="control-label font-weight-bold">ModelName</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select ModelName--", new { @class = "form-control form-control-sm ctrl-changed" })
-                <span class="error hide required-lineNumber font-weight-bold">Required Line Number!</span>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Model Name--", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
             <div class="col-md-3">
                 <label class="control-label font-weight-bold">From Date</label>
@@ -44,8 +43,8 @@
                 <label class="control-label font-weight-bold">To Date</label>
                 <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
             </div>
-            <div class="offset-3 col-md-3">
-                <label class="control-label font-weight-bold" style="visibility:hidden">Add New</label>
+            <div class="offset-1 col-md-2">
+                <label class="control-label font-weight-bold" style="visibility:hidden">Add</label>
                 <br />
                 <a href="/Production/CreateRequsition" style="background-color:darkblue" class="btn btn-primary btn-sm float-right" id="btnAddNew"><i class="fa fa-plus"></i> Create New Requisition</a>
             </div>
@@ -78,9 +77,9 @@
 
         var txtReqCode = $("#txtReqCode");
         var ddlWarehouseName = $("#ddlWarehouseName");
-        var ddlModelName = $("#ddlModelName");
         var ddlStateStatus = $("#ddlStateStatus");
         var ddlLineNumber = $("#ddlLineNumber");
+        var ddlModelName = $("#ddlModelName");
         var dptFromDate = $("#dptFromDate");
         var dptToDate = $("#dptToDate");
         var hdfReqInfoId = $("#hdfReqInfoId");
@@ -110,7 +109,7 @@
 
         function LoadDataTable()
         {
-            var data = { reqCode: txtReqCode.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), status: ddlStateStatus.val(), line: TryParseInt(ddlLineNumber.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val() };
+            var data = { reqCode: txtReqCode.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0), status: ddlStateStatus.val(), line: TryParseInt(ddlLineNumber.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val() };
 
             $.when(getReqWithData('html', 'GET', '/Production/GetReqInfoParitalList', data)).then(function (res, status)
             {

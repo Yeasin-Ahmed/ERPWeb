@@ -52,15 +52,12 @@
     <Compile Include="Common\Dropdown.cs" />
     <Compile Include="ControlPanel\DomainModels\Branch.cs" />
     <Compile Include="ControlPanel\DomainModels\AppUser.cs" />
-    <Compile Include="ControlPanel\DomainModels\Role.cs" />
     <Compile Include="ControlPanel\DTOModels\AppUserDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\BranchDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\OrganizationDTO.cs" />
-    <Compile Include="ControlPanel\DTOModels\RoleDTO.cs" />
     <Compile Include="ControlPanel\ViewModels\AppUserViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\BranchViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\OrganizationViewModel.cs" />
-    <Compile Include="ControlPanel\ViewModels\RoleViewModel.cs" />
     <Compile Include="Inventory\DomainModels\WarehouseStockDetail.cs" />
     <Compile Include="Inventory\DomainModels\WarehouseStockInfo.cs" />
     <Compile Include="Inventory\DTOModel\ItemDomainModel.cs" />
@@ -70,13 +67,10 @@
     <Compile Include="Inventory\ViewModels\WarehouseStockDetailViewModel.cs" />
     <Compile Include="Inventory\ViewModels\WarehouseStockInfoViewModel.cs" />
     <Compile Include="Production\DomainModels\Description.cs" />
-    <Compile Include="Production\DomainModels\ItemReturnDetail.cs" />
-    <Compile Include="Production\DomainModels\ItemReturnInfo.cs" />
     <Compile Include="Production\DomainModels\ProductionLine.cs" />
     <Compile Include="Production\DomainModels\ProductionStockDetail.cs" />
     <Compile Include="Production\DomainModels\ProductionStockInfo.cs" />
     <Compile Include="Production\DTOModel\DescriptionDTO.cs" />
-    <Compile Include="Production\ViewModels\DescriptionViewModel.cs" />
     <Compile Include="Production\DTOModel\ProductionLineDTO.cs" />
     <Compile Include="Production\DTOModel\ReqInfoDetailsDTO.cs" />
     <Compile Include="Production\DTOModel\RequsitionDetailDTO.cs" />
@@ -92,6 +86,7 @@
     <Compile Include="Inventory\ViewModels\ItemViewModel.cs" />
     <Compile Include="Production\DTOModel\ProductionStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionStockInfoDTO.cs" />
+    <Compile Include="Production\ViewModels\DescriptionViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionLineViewModel.cs" />
     <Compile Include="Production\ViewModels\RequsitionDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\RequsitionInfoViewModel.cs" />

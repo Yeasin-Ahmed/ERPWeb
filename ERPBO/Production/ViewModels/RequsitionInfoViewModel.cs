@@ -34,6 +34,7 @@ namespace ERPBO.Production.ViewModels
         public string WarehouseName { get; set; }
         [StringLength(100)]
         public string LineNumber { get; set; }
+        public string ModelName { get; set; }
         public int Qty { get; set; }
         [StringLength(100)]
         public string ModelName { get; set; }

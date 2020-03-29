@@ -37,5 +37,6 @@ namespace ERPBO.Production.ViewModels
         public string ItemName { get; set; }
         [StringLength(100)]
         public string UnitName { get; set; }
+        public string ModelName { get; set; }
     }
 }

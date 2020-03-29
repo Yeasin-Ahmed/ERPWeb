@@ -68,7 +68,7 @@
         </table>
         <div class="container">
             <ul class="pagination pagination-sm float-lg-right ">
-                @Html.PagedListPager((IPagedList)Model, page => Url.Action("GetProductionLineList", new { page }), new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true })
+                @Html.PagedListPager((IPagedList)Model, page => Url.Action("GetProductionLineList", new { page }), new PagedListRenderOptions() { Display=PagedListDisplayMode.IfNeeded,DisplayPageCountAndCurrentLocation=true})
             </ul>
         </div>
     </div>

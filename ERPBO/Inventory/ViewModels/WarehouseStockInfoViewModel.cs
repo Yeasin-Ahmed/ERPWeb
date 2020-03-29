@@ -39,5 +39,10 @@ namespace ERPBO.Inventory.ViewModels
         public string Item { get; set; }
         [StringLength(100)]
         public string Unit { get; set; }
+        public int? Stock { get
+            {
+                return (StockInQty - StockOutQty);
+            }
+        }
     }
 }

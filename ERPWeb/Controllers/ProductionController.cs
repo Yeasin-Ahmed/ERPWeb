@@ -62,7 +62,7 @@ namespace ERPWeb.Controllers
             }).OrderBy(p => p.LineId).ToPagedList(page ?? 1, 15);
             IEnumerable<ProductionLineViewModel> productionLineViewModelForPage = new List<ProductionLineViewModel>();
             //List<ProductionLineViewModel> productionLineViewModels = new List<ProductionLineViewModel>();
-            // AutoMapper.Mapper.Map(productionLineDTO, productionLineViewModels);
+           // AutoMapper.Mapper.Map(productionLineDTO, productionLineViewModels);
             return View(productionLineDTO);
         }
         [HttpPost]
@@ -88,15 +88,16 @@ namespace ERPWeb.Controllers
 
         #region Requsition
         [HttpGet]
-        public ActionResult GetReqInfoList()
+        public ActionResult GetReqInfoList(int? page)
         {
             ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(ware => new SelectListItem { Text = ware.WarehouseName, Value = ware.Id.ToString() }).ToList();
 
             ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(line => new SelectListItem { Text = line.DescriptionName, Value = line.DescriptionId.ToString() }).ToList();
 
-            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
-
-            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status => status.value != RequisitionStatus.Pending).Select(st => new SelectListItem
+            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status => 1==1
+            //status.value != RequisitionStatus.Pending
+            ).Select(st => new SelectListItem
             {
                 Text = st.text,
                 Value = st.value
@@ -107,8 +108,10 @@ namespace ERPWeb.Controllers
         public ActionResult CreateRequsition()
         {
             ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(line => new SelectListItem { Text = line.WarehouseName, Value = line.Id.ToString() }).ToList();
+
             ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
 
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(line => new SelectListItem { Text = line.DescriptionName, Value = line.DescriptionId.ToString() }).ToList();
             return View();
         }
 
@@ -133,7 +136,7 @@ namespace ERPWeb.Controllers
         }
 
         // Used By  GetReqInfoList ActionMethod
-        public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? line, long? modelId, string fromDate, string toDate, int? page)
+        public ActionResult GetReqInfoParitalList(string reqCode,long? warehouseId,string status, long? line,long? modelId,string fromDate, string toDate,int? page)
         {
             IPagedList<RequsitionInfoViewModel> requsitionInfoViewModels = _requsitionInfoBusiness.GetAllReqInfoByOrgId(OrgId).Where(req =>
                 //req.StateStatus != RequisitionStatus.Pending &&
@@ -141,7 +144,7 @@ namespace ERPWeb.Controllers
                 (warehouseId == null || warehouseId <= 0 || req.WarehouseId == warehouseId) &&
                 (status == null || status.Trim() == "" || req.StateStatus == status.Trim()) &&
                 (line == null || line <= 0 || req.LineId == line) &&
-                (modelId == null || modelId <= 0 || req.DescriptionId == modelId) &&
+                (modelId==null || modelId <=0 || req.DescriptionId==modelId) &&
                 (
                     (fromDate == null && toDate == null)
                     ||
@@ -162,8 +165,8 @@ namespace ERPWeb.Controllers
                 ReqInfoCode = info.ReqInfoCode,
                 LineId = info.LineId,
                 LineNumber = (_productionLineBusiness.GetProductionLineOneByOrgId(info.LineId, OrgId).LineNumber),
-                DescriptionId = info.DescriptionId,
-                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId, OrgId).DescriptionName),
+                DescriptionId=info.DescriptionId,
+                ModelName=(_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId,OrgId).DescriptionName),
                 StateStatus = info.StateStatus,
                 Remarks = info.Remarks,
                 OrganizationId = info.OrganizationId,
@@ -225,20 +228,26 @@ namespace ERPWeb.Controllers
                 Value = ware.Id.ToString()
             }).ToList();
 
-            ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+            ViewBag.ddlProductionLine = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem
+            {
+                Text = line.LineNumber,
+                Value = line.LineId.ToString()
+            }).ToList();
             return View();
         }
 
         [HttpGet]
-        public ActionResult GetProductionStockInfoPartialList(long? WarehouseId, long? LineId, long? ItemTypeId, long? ItemId, int? page)
+        public ActionResult GetProductionStockInfoPartialList(long? WarehouseId,long? LineId, long? ItemTypeId, long? ItemId, int? page)
         {
             IEnumerable<ProductionStockInfoDTO> productionStockInfoDTO = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(OrgId).Select(info => new ProductionStockInfoDTO
             {
                 StockInfoId = info.ProductionStockInfoId,
                 LineId = info.LineId.Value,
-                LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(info.LineId.Value, OrgId).LineNumber,
+                LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(info.LineId.Value,OrgId).LineNumber,
                 WarehouseId = info.WarehouseId,
                 Warehouse = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, OrgId).WarehouseName),
+                LineId=info.LineId.Value,
+                LineNumber=(_productionLineBusiness.GetProductionLineOneByOrgId(info.LineId.Value,OrgId).LineNumber),
                 ItemTypeId = info.ItemTypeId,
                 ItemType = (_itemTypeBusiness.GetItemType(info.ItemTypeId.Value, OrgId).ItemName),
                 ItemId = info.ItemId,
@@ -251,7 +260,7 @@ namespace ERPWeb.Controllers
                 OrganizationId = info.OrganizationId,
             }).AsEnumerable();
 
-            productionStockInfoDTO = productionStockInfoDTO.Where(ws => (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId) && (LineId == null || LineId == 0 || ws.LineId == LineId) && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)).OrderBy(p => p.StockInfoId).ToPagedList(page ?? 1, 15);
+            productionStockInfoDTO = productionStockInfoDTO.Where(ws => (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId)&&(LineId==null||LineId==0||ws.LineId==LineId) && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)).OrderBy(p => p.StockInfoId).ToPagedList(page ?? 1, 15);
 
             // List<ProductionStockInfoViewModel> productionStockInfoViews = new List<ProductionStockInfoViewModel>();
             //AutoMapper.Mapper.Map(productionStockInfoDTO, productionStockInfoViews);

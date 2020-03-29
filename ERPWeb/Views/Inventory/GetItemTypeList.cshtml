@@ -1,9 +1,11 @@
-﻿@model IEnumerable<ERPBO.Inventory.ViewModels.ItemTypeViewModel>
+﻿@model PagedList.IPagedList<ERPBO.Inventory.ViewModels.ItemTypeViewModel>
 @{
     ViewBag.Title = "GetItemTypeList";
     int sl = 0;
     string badge = string.Empty;
 }
+@using PagedList;
+@using PagedList.Mvc;
 <div class="row">
     <div class="col-md-12 text-center">
         <h4><b style="color:darkblue">List Of ItemTypes</b></h4>
@@ -65,6 +67,11 @@
                 }
             </tbody>
         </table>
+        <div class="container">
+            <ul class="pagination pagination-lg float-lg-right">
+                @Html.PagedListPager((IPagedList)Model, page => Url.Action("GetItemTypeList", new { page}),new PagedListRenderOptions() { Display=PagedListDisplayMode.IfNeeded,DisplayPageCountAndCurrentLocation=true})
+            </ul>
+        </div>
     </div>
 </div>
 

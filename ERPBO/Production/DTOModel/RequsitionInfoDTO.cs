@@ -22,9 +22,7 @@ namespace ERPBO.Production.DTOModel
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public long WarehouseId { get; set; }
-        [Range(1, long.MaxValue)]
         public long LineId { get; set; }
-        [Range(1, long.MaxValue)]
         public long DescriptionId { get; set; }
 
         //Navi
@@ -33,9 +31,8 @@ namespace ERPBO.Production.DTOModel
         public string WarehouseName { get; set; }
         [StringLength(100)]
         public string LineNumber { get; set; }
-        public int Qty { get; set; }
-        [StringLength(100)]
         public string ModelName { get; set; }
+        public int Qty { get; set; }
 
     }
 }
