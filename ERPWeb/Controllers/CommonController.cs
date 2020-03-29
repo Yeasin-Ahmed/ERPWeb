@@ -5,6 +5,7 @@ using ERPWeb.Filters;
 using System.Linq;
 using System.Web.Mvc;
 using ERPBO.Inventory.DTOModel;
+using ERPBLL.ControlPanel.Interface;
 
 namespace ERPWeb.Controllers
 {
@@ -18,10 +19,12 @@ namespace ERPWeb.Controllers
         private readonly IRequsitionInfoBusiness _requsitionInfoBusiness;
         private readonly IRequsitionDetailBusiness _requsitionDetailBusiness;
         private readonly IProductionLineBusiness _productionLineBusiness;
+        private readonly IBranchBusiness _branchBusiness;
+        private readonly IRoleBusiness _roleBusiness;
 
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
-        public CommonController(IWarehouseBusiness warehouseBusiness,IItemTypeBusiness itemTypeBusiness,IUnitBusiness unitBusiness,IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness,IItemTypeBusiness itemTypeBusiness,IUnitBusiness unitBusiness,IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness,IBranchBusiness branchBusiness,IRoleBusiness roleBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -30,6 +33,8 @@ namespace ERPWeb.Controllers
             this._requsitionInfoBusiness = requsitionInfoBusiness;
             this._requsitionDetailBusiness = requsitionDetailBusiness;
             this._productionLineBusiness = productionLineBusiness;
+            this._branchBusiness = branchBusiness;
+            this._roleBusiness = roleBusiness;
         }
 
         #region Validation Action Methods
@@ -56,6 +61,18 @@ namespace ERPWeb.Controllers
         public ActionResult IsDuplicateItemName(string itemName, long id)
         {
             bool isExist = _itemBusiness.IsDuplicateItemName(itemName, id, OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateBrachName(string branchName, long id)
+        {
+            bool isExist = _branchBusiness.IsDuplicateBrachName(branchName, id, OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateRoleName(string roleName, long id)
+        {
+            bool isExist = _roleBusiness.IsDuplicateRoleName(roleName, id, OrgId);
             return Json(isExist);
         }
 

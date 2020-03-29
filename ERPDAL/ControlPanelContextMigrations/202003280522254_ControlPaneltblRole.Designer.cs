@@ -7,13 +7,13 @@ namespace ERPDAL.ControlPanelContextMigrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class ControlPanelAllEntities : IMigrationMetadata
+    public sealed partial class ControlPaneltblRole : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ControlPanelAllEntities));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ControlPaneltblRole));
         
         string IMigrationMetadata.Id
         {
-            get { return "202003150415048_ControlPanelAllEntities"; }
+            get { return "202003280522254_ControlPaneltblRole"; }
         }
         
         string IMigrationMetadata.Source

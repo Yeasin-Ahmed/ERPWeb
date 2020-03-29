@@ -18,5 +18,6 @@ namespace ERPDAL.ControlPanelDAL
         public DbSet<Organization> tblOrganizations { get; set; }
         public DbSet<Branch> tblBranch { get; set; }
         public DbSet<AppUser> tblApplicationUsers { get; set; }
+        public DbSet<Role> tblRoles { get; set; }
     }
 }

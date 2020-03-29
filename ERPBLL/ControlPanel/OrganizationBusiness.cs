@@ -23,7 +23,7 @@ namespace ERPBLL.ControlPanel
 
         public IEnumerable<Organization> GetAllOrganizations()
         {
-            return _organizationRepository.GetAll();
+            return _organizationRepository.GetAll().ToList();
         }
 
         public Organization GetOrganizationById(long id)

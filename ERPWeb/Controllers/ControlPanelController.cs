@@ -1,7 +1,9 @@
 ﻿using ERPBLL.ControlPanel.Interface;
+using ERPBO.ControlPanel.DomainModels;
 using ERPBO.ControlPanel.DTOModels;
 using ERPBO.ControlPanel.ViewModels;
 using ERPWeb.Filters;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +15,17 @@ namespace ERPWeb.Controllers
     public class ControlPanelController : Controller
     {
         private readonly IOrganizationBusiness _organizationBusiness;
+        private readonly IBranchBusiness _branchBusiness;
+        private readonly IRoleBusiness _roleBusiness;
+
+
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
-        public ControlPanelController(IOrganizationBusiness organizationBusiness)
+        public ControlPanelController(IOrganizationBusiness organizationBusiness,IBranchBusiness branchBusiness,IRoleBusiness roleBusiness)
         {
             this._organizationBusiness = organizationBusiness;
+            this._branchBusiness = branchBusiness;
+            this._roleBusiness = roleBusiness;
         }
         // GET: ControlPanel
         [HttpGet]
@@ -83,5 +91,85 @@ namespace ERPWeb.Controllers
             }
             return Json(IsSuccess);
         }
+
+        #region Branch
+        public ActionResult GetBranchList(int? page)
+        {
+            ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text =br.OrganizationName, Value=br.OrgId.ToString()});
+
+            IPagedList<BranchViewModel> branchViewModels = _branchBusiness.GetBranchByOrgId(OrgId).Select(br => new BranchViewModel
+            {
+                BranchId = br.BranchId,
+                BranchName = br.BranchName,
+                ShortName=br.ShortName,
+                MobileNo=br.MobileNo,
+                Email=br.Email,
+                PhoneNo=br.PhoneNo,
+                Fax=br.Fax,
+                StateStatus = (br.IsActive == true ? "Active" : "Inactive"),
+                Remarks=br.Remarks,
+                OrganizationId=br.OrganizationId,
+                OrganizationName=(_organizationBusiness.GetOrganizationById(OrgId).OrganizationName),
+            }).OrderBy(br => br.BranchId).ToPagedList(page ?? 1, 15);
+            IEnumerable<BranchViewModel> branchViewModelForPage = new List<BranchViewModel>();
+            return View(branchViewModels);
+        }
+
+        public ActionResult SaveBranch(BranchViewModel branchViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    BranchDTO dto = new BranchDTO();
+                    AutoMapper.Mapper.Map(branchViewModel, dto);
+                    isSuccess = _branchBusiness.SaveBranch(dto, UserId, OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region Role
+        public ActionResult GetRoleList(int? page)
+        {
+            ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text = br.OrganizationName, Value = br.OrgId.ToString() });
+
+             
+            IPagedList <RoleViewModel> roleViewModels = _roleBusiness.GetAllRoleByOrgId(OrgId).Select(role => new RoleViewModel
+            {
+                RoleId = role.RoleId,
+                RoleName = role.RoleName,
+                OrganizationId = role.OrganizationId,
+                OrganizationName=(_organizationBusiness.GetOrganizationById(OrgId).OrganizationName),
+            }).OrderBy(role => role.RoleId).ToPagedList(page ?? 1, 15);
+            IEnumerable<RoleViewModel> roleViewModelForPage = new List<RoleViewModel>();
+            return View(roleViewModels);
+        }
+
+        public ActionResult SaveRole(RoleViewModel roleViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    RoleDTO dto = new RoleDTO();
+                    AutoMapper.Mapper.Map(roleViewModel, dto);
+                    isSuccess = _roleBusiness.SaveRole(dto, UserId, OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
     }
 }
