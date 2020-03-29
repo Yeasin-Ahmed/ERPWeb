@@ -23,5 +23,9 @@ namespace ERPBLL.Production
         {
             return productionStockInfoRepository.GetAll(ware => ware.OrganizationId == orgId).ToList();
         }
+        public ProductionStockInfo GetAllProductionStockInfoByItemLineId(long orgId,long itemId,long lineId)
+        {
+            return productionStockInfoRepository.GetAll(ware => ware.OrganizationId == orgId && ware.ItemId == itemId  && ware.LineId == lineId).FirstOrDefault();
+        }
     }
 }

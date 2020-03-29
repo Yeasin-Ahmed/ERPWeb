@@ -14,3 +14,8 @@ Add-Migration 'ProductionDbInitialize' -ProjectName 'ERPDAL' -ConfigurationTypeN
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ControlPanelContextMigrations.Configuration
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.InventoryContextMigrations.Configuration
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ProductionContextMigrations.Configuration
+
+--- For Script
+Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ControlPanelContextMigrations.Configuration
+Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.InventoryContextMigrations.Configuration
+Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ProductionContextMigrations.Configuration

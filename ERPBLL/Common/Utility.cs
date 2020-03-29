@@ -19,7 +19,28 @@ namespace ERPBLL.Common
                 new Dropdown{text=RequisitionStatus.Recheck,value=RequisitionStatus.Recheck },
                 new Dropdown{text=RequisitionStatus.Approved,value=RequisitionStatus.Approved },
                 new Dropdown{text=RequisitionStatus.Accepted,value=RequisitionStatus.Accepted },
-                new Dropdown{text=RequisitionStatus.Rejected,value=RequisitionStatus.Pending }
+                new Dropdown{text=RequisitionStatus.Rejected,value=RequisitionStatus.Pending },
+                new Dropdown{text=RequisitionStatus.Canceled,value=RequisitionStatus.Canceled }
+            };
+            return dropdowns;
+        }
+        public static IEnumerable<Dropdown> ListOfReturnType()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>()
+            {
+                new Dropdown{text=ReturnType.RepairFaultyReturn,value=ReturnType.RepairFaultyReturn },
+                new Dropdown{text=ReturnType.RepairGoodsReturn,value=ReturnType.RepairGoodsReturn },
+                new Dropdown{text=ReturnType.ProductionFaultyReturn,value=ReturnType.ProductionFaultyReturn},
+                new Dropdown{text=ReturnType.ProductionGoodsReturn,value=ReturnType.ProductionGoodsReturn },
+            };
+            return dropdowns;
+        }
+        public static IEnumerable<Dropdown> ListOfFaultyCase()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=FaultyCase.ManMade,value=FaultyCase.ManMade},
+                new Dropdown(){text=FaultyCase.ChinaMade,value=FaultyCase.ChinaMade}
             };
             return dropdowns;
         }

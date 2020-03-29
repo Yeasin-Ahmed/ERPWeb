@@ -21,7 +21,7 @@ namespace ERPBLL.Inventory
         ///  db Stands for          - Database
         ///  repo Stands for       - Repository
         /// </summary>
-        
+
         private readonly IInventoryUnitOfWork _inventoryDb; // db
         private readonly IItemBusiness _itemBusiness;
         private readonly IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
@@ -29,17 +29,23 @@ namespace ERPBLL.Inventory
         private readonly WarehouseStockInfoRepository warehouseStockInfoRepository; // repo 
         private readonly IRequsitionInfoBusiness _requsitionInfoBusiness; // BC
         private readonly IRequsitionDetailBusiness _requsitionDetailBusiness; // BC
+        private readonly IItemReturnInfoBusiness _itemReturnInfoBusiness; // BC
+        private readonly IItemReturnDetailBusiness _itemReturnDetailBusiness; // BC
+        private readonly IRepairStockDetailBusiness _repairStockDetailBusiness; //BC
 
-        public WarehouseStockDetailBusiness(IInventoryUnitOfWork inventoryDb, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness , IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness)
+        public WarehouseStockDetailBusiness(IInventoryUnitOfWork inventoryDb, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockDetailBusiness repairStockDetailBusiness)
         {
             this._inventoryDb = inventoryDb;
             warehouseStockDetailRepository = new WarehouseStockDetailRepository(this._inventoryDb);
             warehouseStockInfoRepository = new WarehouseStockInfoRepository(this._inventoryDb);
 
-            _warehouseStockInfoBusiness = warehouseStockInfoBusiness;
-            _itemBusiness = itemBusiness;
-            _requsitionInfoBusiness = requsitionInfoBusiness;
-            _requsitionDetailBusiness = requsitionDetailBusiness;
+            this._warehouseStockInfoBusiness = warehouseStockInfoBusiness;
+            this._itemBusiness = itemBusiness;
+            this._requsitionInfoBusiness = requsitionInfoBusiness;
+            this._requsitionDetailBusiness = requsitionDetailBusiness;
+            this._itemReturnInfoBusiness = itemReturnInfoBusiness;
+            this._itemReturnDetailBusiness = itemReturnDetailBusiness;
+            this._repairStockDetailBusiness = repairStockDetailBusiness;
         }
         public IEnumerable<WarehouseStockDetail> GelAllWarehouseStockDetailByOrgId(long orgId)
         {
@@ -62,6 +68,7 @@ namespace ERPBLL.Inventory
                 stockDetail.UnitId = _itemBusiness.GetItemById(item.ItemId.Value, orgId).UnitId;
                 stockDetail.EntryDate = DateTime.Now;
                 stockDetail.StockStatus = StockStatus.StockIn;
+                stockDetail.RefferenceNumber = item.RefferenceNumber;
 
                 var warehouseInfo = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId).FirstOrDefault();
                 if (warehouseInfo != null)
@@ -122,7 +129,8 @@ namespace ERPBLL.Inventory
                                     OrganizationId = orgId,
                                     Remarks = item.Remarks,
                                     StockStatus = StockStatus.StockOut,
-                                    RefferenceNumber = item.RefferenceNumber
+                                    RefferenceNumber = item.RefferenceNumber,
+                                    UnitId = item.UnitId
                                 };
                                 warehouseStockInfoRepository.Update(warehouseInfo);
                                 warehouseStockDetails.Add(warehouseStockDetail);
@@ -167,8 +175,7 @@ namespace ERPBLL.Inventory
                         Remarks = "Stock Out By Production Requistion " + "(" + reqInfo.ReqInfoCode + ")",
                         RefferenceNumber = reqInfo.ReqInfoCode,
                         StockStatus = StockStatus.StockOut
-                };
-
+                    };
                     stockDetailDTOs.Add(stockDetailDTO);
                 }
                 if (SaveWarehouseStockOut(stockDetailDTOs, userId, orgId, "Production Requistion") == true)
@@ -177,6 +184,72 @@ namespace ERPBLL.Inventory
                 }
             }
             return false;
+        }
+        public bool SaveWarehouseStockInByProductionItemReturn(long irInfoId, string status, long orgId, long userId)
+        {
+            bool executionStatus = false;
+            if (status == RequisitionStatus.Accepted)
+            {
+                var irInfo = _itemReturnInfoBusiness.GetItemReturnInfo(orgId, irInfoId);
+                var irDetails = _itemReturnDetailBusiness.GetItemReturnDetailsByReturnInfoId(orgId, irInfoId);
+                if (irInfo.StateStatus == RequisitionStatus.Approved)
+                {
+                    if (irInfo.ReturnType == ReturnType.ProductionGoodsReturn || irInfo.ReturnType == ReturnType.RepairGoodsReturn)
+                    {
+                        // Warehouse Stock-In
+                        List<WarehouseStockDetailDTO> warehouseStockDetailDTOs = new List<WarehouseStockDetailDTO>();
+                        foreach (var item in irDetails)
+                        {
+                            WarehouseStockDetailDTO stockDetailDTO = new WarehouseStockDetailDTO()
+                            {
+                                WarehouseId = irInfo.WarehouseId,
+                                ItemTypeId = item.ItemTypeId,
+                                ItemId = item.ItemId,
+                                Quantity = item.Quantity,
+                                OrganizationId = orgId,
+                                EUserId = userId,
+                                Remarks = "Stock In By Production Item Return" + "(" + irInfo.IRCode + ")",
+                                UnitId = _itemBusiness.GetItemById(item.ItemId, orgId).UnitId,
+                                EntryDate = DateTime.Now,
+                                StockStatus = StockStatus.StockIn,
+                                RefferenceNumber = irInfo.IRCode
+                            };
+                            warehouseStockDetailDTOs.Add(stockDetailDTO);
+                        }
+                        if (SaveWarehouseStockIn(warehouseStockDetailDTOs, userId, orgId) == true)
+                        {
+                            executionStatus = _itemReturnInfoBusiness.SaveItemReturnStatus(irInfoId, status, orgId);
+                        }
+                    }
+                    else if (irInfo.ReturnType == ReturnType.ProductionFaultyReturn || irInfo.ReturnType == ReturnType.RepairFaultyReturn)
+                    {
+                        List<RepairStockDetailDTO> repairStockDetailDTOs = new List<RepairStockDetailDTO>();
+                        foreach (var item in irDetails)
+                        {
+                            RepairStockDetailDTO stockDetailDTO = new RepairStockDetailDTO()
+                            {
+                                WarehouseId = irInfo.WarehouseId,
+                                ItemTypeId = item.ItemTypeId,
+                                ItemId = item.ItemId,
+                                Quantity = item.Quantity,
+                                OrganizationId = orgId,
+                                EUserId = userId,
+                                Remarks = "Stock In By Production Faulty Return" + "(" + irInfo.IRCode + ")",
+                                UnitId = _itemBusiness.GetItemById(item.ItemId, orgId).UnitId,
+                                EntryDate = DateTime.Now,
+                                StockStatus = StockStatus.StockIn,
+                                RefferenceNumber = irInfo.IRCode
+                            };
+                            repairStockDetailDTOs.Add(stockDetailDTO);
+                        }
+                        if (_repairStockDetailBusiness.SaveRepairStockIn(repairStockDetailDTOs, userId, orgId) == true)
+                        {
+                            executionStatus = _itemReturnInfoBusiness.SaveItemReturnStatus(irInfoId, status, orgId);
+                        }
+                    }
+                }
+            }
+            return executionStatus;
         }
     }
 }

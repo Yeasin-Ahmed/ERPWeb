@@ -56,6 +56,12 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -152,6 +158,7 @@
     <Content Include="Content\dist\js\adminlte.js" />
     <Content Include="Content\dist\js\adminlte.min.js" />
     <Content Include="Content\Images\noImage.jpg" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\plugins\bootstrap\js\bootstrap.bundle.js" />
     <Content Include="Content\plugins\bootstrap\js\bootstrap.bundle.min.js" />
     <Content Include="Content\plugins\bootstrap\js\bootstrap.js" />
@@ -177,6 +184,7 @@
     <Content Include="Content\plugins\Toastr\toastr.css" />
     <Content Include="Content\plugins\Toastr\toastr.min.js" />
     <Content Include="Content\Site.css" />
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="MigrationScripts.txt" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
@@ -267,6 +275,18 @@
     <Content Include="Views\Production\_ProductionStockInfoList.cshtml" />
     <Content Include="Views\ControlPanel\GetOrganizations.cshtml" />
     <Content Include="Views\ControlPanel\CreateOrganization.cshtml" />
+    <Content Include="Views\Production\GetItemReturnList.cshtml" />
+    <Content Include="Views\Shared\UI_Common_Layout.cshtml" />
+    <Content Include="Views\Production\CreateFaultyGoodReturn.cshtml" />
+    <Content Include="Views\Production\_GetItemReturnList.cshtml" />
+    <Content Include="Views\Inventory\_GetItemReturnList.cshtml" />
+    <Content Include="Views\Inventory\GetItemReturnList.cshtml" />
+    <Content Include="Views\Inventory\_GetProductionItemReturnDetails.cshtml" />
+    <Content Include="Views\Production\_GetProductionItemReturnDetails.cshtml" />
+    <Content Include="Views\Inventory\GetRepairStockInfoList.cshtml" />
+    <Content Include="Views\Inventory\_RepairStockInfoList.cshtml" />
+    <Content Include="Views\Production\GetProductionFaultyOrReturnItemDetailList.cshtml" />
+    <Content Include="Views\Production\_GetProductionFaultyOrReturnItemDetailList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

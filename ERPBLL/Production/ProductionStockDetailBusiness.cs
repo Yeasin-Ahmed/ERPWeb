@@ -90,7 +90,34 @@ namespace ERPBLL.Production
         }
         public bool SaveProductionStockOut(List<ProductionStockDetailDTO> productionStockDetailDTOs, long userId, long orgId, string flag)
         {
-            throw new NotImplementedException();
+            var executionStatus = false;
+            List<ProductionStockDetail> productionStockDetails = new List<ProductionStockDetail>();
+            if(flag == ReturnType.ProductionGoodsReturn || flag == ReturnType.RepairGoodsReturn)
+            {
+                foreach (var item in productionStockDetailDTOs)
+                {
+                    ProductionStockDetail stockDetail = new ProductionStockDetail();
+                    stockDetail.WarehouseId = item.WarehouseId;
+                    stockDetail.ItemTypeId = item.ItemTypeId;
+                    stockDetail.ItemId = item.ItemId;
+                    stockDetail.Quantity = item.Quantity;
+                    stockDetail.OrganizationId = orgId;
+                    stockDetail.EUserId = userId;
+                    stockDetail.Remarks = item.Remarks;
+                    stockDetail.UnitId = item.UnitId;
+                    stockDetail.RefferenceNumber = item.RefferenceNumber;
+                    stockDetail.LineId = item.LineId;
+                    stockDetail.EntryDate = item.EntryDate;
+                    stockDetail.StockStatus = StockStatus.StockReturn;
+                    productionStockDetails.Add(stockDetail);
+                    var stockInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByItemLineId(orgId, item.ItemId.Value, item.LineId.Value);
+                    stockInfo.StockOutQty += stockDetail.Quantity;
+                    _productionStockInfoRepository.Update(stockInfo);
+                }
+                _productionStockDetailRepository.InsertAll(productionStockDetails);
+                executionStatus = _productionStockDetailRepository.Save();
+            }
+            return executionStatus;
         }
         public bool SaveProductionStockInByProductionRequistion(long reqId, string status, long orgId, long userId)
         {

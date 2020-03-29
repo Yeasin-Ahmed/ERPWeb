@@ -10,5 +10,6 @@ namespace ERPBLL.Production.Interface
     public interface IProductionStockInfoBusiness
     {
         IEnumerable<ProductionStockInfo> GetAllProductionStockInfoByOrgId(long orgId);
+        ProductionStockInfo GetAllProductionStockInfoByItemLineId(long orgId,long itemId,long lineId);
     }
 }
