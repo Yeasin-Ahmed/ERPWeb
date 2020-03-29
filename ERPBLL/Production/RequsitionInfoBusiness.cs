@@ -38,12 +38,10 @@ namespace ERPBLL.Production
         {
             return requsitionInfoRepository.GetAll(unit => unit.OrganizationId == orgId).ToList();
         }
-
         public RequsitionInfo GetRequisitionById(long reqId, long orgId)
         {
             return requsitionInfoRepository.GetOneByOrg(req=>req.ReqInfoId ==reqId && req.OrganizationId == orgId);
         }
-
         public bool SaveRequisition(ReqInfoDTO reqInfoDTO, long userId, long orgId)
         {
             RequsitionInfo requsitionInfo = new RequsitionInfo();

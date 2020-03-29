@@ -15,5 +15,7 @@ namespace ERPDAL.ProductionDAL
         public DbSet<ProductionLine> tblProductionLines { get; set; }
         public DbSet<ProductionStockInfo> tblProductionStockInfo { get; set; }
         public DbSet<ProductionStockDetail> tblProductionStockDetail { get; set; }
+        public DbSet<ItemReturnInfo> tblItemReturnInfo { get; set; }
+        public DbSet<ItemReturnDetail> tblItemReturnDetail { get; set; }
     }
 }

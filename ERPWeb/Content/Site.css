@@ -28,6 +28,7 @@ textarea {
 }
 .error{
     color:red;
+    font-size:10pt;
     font-weight:bold;
 }
 

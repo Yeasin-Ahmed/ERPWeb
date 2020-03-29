@@ -19,7 +19,8 @@ var reqStatus = {
     reject: "Rejected",
     recheck: "Recheck",
     approved: "Approved",
-    accepted: "Accepted"
+    accepted: "Accepted",
+    canceled: "Canceled"
 };
 
 var stockStatus = {

@@ -22,20 +22,24 @@ namespace ERPWeb.Controllers
     public class InventoryController : BaseController
     {
         // GET: Inventory
-        private IWarehouseBusiness _warehouseBusiness;
-        private IItemTypeBusiness _itemTypeBusiness;
-        private IUnitBusiness _unitBusiness;
-        private IItemBusiness _itemBusiness;
-        private IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
-        private IWarehouseStockDetailBusiness _warehouseStockDetailBusiness;
-        private IProductionLineBusiness _productionLineBusiness;
-        private IRequsitionInfoBusiness _requsitionInfoBusiness;
-        private IRequsitionDetailBusiness _requsitionDetailBusiness;
+        private readonly IWarehouseBusiness _warehouseBusiness;
+        private readonly IItemTypeBusiness _itemTypeBusiness;
+        private readonly IUnitBusiness _unitBusiness;
+        private readonly IItemBusiness _itemBusiness;
+        private readonly IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
+        private readonly IWarehouseStockDetailBusiness _warehouseStockDetailBusiness;
+        private readonly IProductionLineBusiness _productionLineBusiness;
+        private readonly IRequsitionInfoBusiness _requsitionInfoBusiness;
+        private readonly IRequsitionDetailBusiness _requsitionDetailBusiness;
+        private readonly IItemReturnInfoBusiness _itemReturnInfoBusiness;
+        private readonly IItemReturnDetailBusiness _itemReturnDetailBusiness;
+        private readonly IRepairStockInfoBusiness _repairStockInfoBusiness;
+        private readonly IRepairStockDetailBusiness _repairStockDetailBusiness;
 
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
 
-        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness)
+        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -46,6 +50,10 @@ namespace ERPWeb.Controllers
             this._productionLineBusiness = productionLineBusiness;
             this._requsitionInfoBusiness = requsitionInfoBusiness;
             this._requsitionDetailBusiness = requsitionDetailBusiness;
+            this._itemReturnInfoBusiness = itemReturnInfoBusiness;
+            this._itemReturnDetailBusiness = itemReturnDetailBusiness;
+            this._repairStockInfoBusiness = repairStockInfoBusiness;
+            this._repairStockDetailBusiness = repairStockDetailBusiness;
         }
         // GET: Account
 
@@ -367,29 +375,188 @@ namespace ERPWeb.Controllers
             AutoMapper.Mapper.Map(requsitionDetailDTO, requsitionDetailViewModels);
 
             ViewBag.RequisitionStatus = _requsitionInfoBusiness.GetRequisitionById(reqId.Value, OrgId).StateStatus;
-            
+
             return PartialView("_GetRequsitionDetails", requsitionDetailViewModels);
         }
 
-        [HttpPost,ValidateJsonAntiForgeryToken]
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveRequisitionStatus(long reqId, string status)
         {
             bool IsSuccess = false;
             if (reqId > 0 && !string.IsNullOrEmpty(status))
             {
-                if(RequisitionStatus.Rejected == status || RequisitionStatus.Recheck == status)
+                if (RequisitionStatus.Rejected == status || RequisitionStatus.Recheck == status)
                 {
                     IsSuccess = _requsitionInfoBusiness.SaveRequisitionStatus(reqId, status, OrgId);
                 }
                 else if (RequisitionStatus.Approved == status)
                 {
-                    IsSuccess = _warehouseStockDetailBusiness.SaveWarehouseStockOutByProductionRequistion(reqId, status, OrgId,UserId);
+                    IsSuccess = _warehouseStockDetailBusiness.SaveWarehouseStockOutByProductionRequistion(reqId, status, OrgId, UserId);
                 }
             }
             return Json(IsSuccess);
         }
         #endregion
 
+        #region Item Return -Table
+        public ActionResult GetItemReturnList(string flag, string code, long? lineId, long? warehouseId, string status, string returnType, string faultyCase, string fromDate, string toDate)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ReturnType = Utility.ListOfReturnType().Select(s => new SelectListItem() { Text = s.text, Value = s.value }).ToList();
+
+                ViewBag.FaultyCase = Utility.ListOfFaultyCase().Select(s => new SelectListItem() { Text = s.text, Value = s.value }).ToList();
+
+                ViewBag.ListOfLine = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(l => new SelectListItem
+                {
+                    Text = l.LineNumber,
+                    Value = l.LineId.ToString()
+                }).ToList();
+
+                ViewBag.ListOfWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(w => new SelectListItem
+                {
+                    Text = w.WarehouseName,
+                    Value = w.Id.ToString()
+                }).ToList();
+
+                ViewBag.Status = Utility.ListOfReqStatus().Where(s
+ => s.text == RequisitionStatus.Approved || s.text == RequisitionStatus.Accepted).Select(s => new SelectListItem() { Text = s.text, Value = s.value }).ToList();
+                return View();
+            }
+            else
+            {
+                var warehouses = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).ToList();
+                var lines = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).ToList();
+                IEnumerable<ItemReturnInfoDTO> itemReturnInfoDTOs = _itemReturnInfoBusiness.GetItemReturnInfos(OrgId).Where(i => 1 == 1
+                && (code == null || code.Trim() == "" || i.IRCode.Contains(code))
+                && (lineId == null || lineId <= 0 || i.LineId == lineId)
+                && (warehouseId == null || warehouseId <= 0 || i.WarehouseId == warehouseId)
+                && ((status == null && (i.StateStatus == RequisitionStatus.Approved || i.StateStatus == RequisitionStatus.Accepted)) || (status.Trim() == "" && (i.StateStatus == RequisitionStatus.Approved || i.StateStatus == RequisitionStatus.Accepted)) || i.StateStatus == status.Trim())
+                && (returnType == null || returnType.Trim() == "" || i.ReturnType == returnType.Trim())
+                && (faultyCase == null || faultyCase.Trim() == "" || i.FaultyCase == faultyCase.Trim())
+                &&
+                (
+                    (fromDate == null && toDate == null)
+                    ||
+                     (fromDate == "" && toDate == "")
+                    ||
+                    (fromDate.Trim() != "" && toDate.Trim() != "" &&
+
+                        i.EntryDate.Value.Date >= Convert.ToDateTime(fromDate).Date &&
+                        i.EntryDate.Value.Date <= Convert.ToDateTime(toDate).Date)
+                    ||
+                    (fromDate.Trim() != "" && i.EntryDate.Value.Date == Convert.ToDateTime(fromDate).Date)
+                    ||
+                    (toDate.Trim() != "" && i.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
+                )
+                ).Select(i => new ItemReturnInfoDTO
+                {
+                    IRInfoId = i.IRInfoId,
+                    IRCode = i.IRCode,
+                    ReturnType = i.ReturnType,
+                    FaultyCase = i.FaultyCase,
+                    LineId = lines.Where(l => l.LineId == i.LineId).FirstOrDefault().LineId,
+                    LineNumber = lines.Where(l => l.LineId == i.LineId).FirstOrDefault().LineNumber,
+                    WarehouseId = warehouses.Where(w => w.Id == i.WarehouseId).FirstOrDefault().Id,
+                    WarehouseName = warehouses.Where(w => w.Id == i.WarehouseId).FirstOrDefault().WarehouseName,
+                    Qty = _itemReturnDetailBusiness.GetItemReturnDetailsByReturnInfoId(OrgId, i.IRInfoId).Count(),
+                    StateStatus = i.StateStatus,
+                    EntryDate = i.EntryDate
+
+                }).ToList();
+
+                List<ItemReturnInfoViewModel> itemReturnInfoViewModels = new List<ItemReturnInfoViewModel>();
+                AutoMapper.Mapper.Map(itemReturnInfoDTOs, itemReturnInfoViewModels);
+                return PartialView("_GetItemReturnList", itemReturnInfoViewModels);
+            }
+        }
+
+        public ActionResult GetProductionItemReturnDetails(long itemReturnInfoId)
+        {
+            var items = _itemBusiness.GetAllItemByOrgId(OrgId);
+            var itemTypes = _itemTypeBusiness.GetAllItemTypeByOrgId(OrgId);
+            var units = _unitBusiness.GetAllUnitByOrgId(OrgId);
+            IEnumerable<ItemReturnDetailDTO> itemReturnDetailDTOs = _itemReturnDetailBusiness.GetItemReturnDetailsByReturnInfoId(OrgId, itemReturnInfoId).Select(s => new ItemReturnDetailDTO
+            {
+                IRDetailId = s.IRDetailId,
+                ItemTypeId = s.ItemTypeId,
+                ItemTypeName = itemTypes.FirstOrDefault(i => i.ItemId == s.ItemTypeId).ItemName,
+                ItemId = s.ItemId,
+                ItemName = items.FirstOrDefault(i => i.ItemId == s.ItemId).ItemName,
+                UnitId = s.UnitId,
+                UnitName = units.FirstOrDefault(i => i.UnitId == s.UnitId).UnitName,
+                Quantity = s.Quantity,
+                Remarks = s.Remarks
+            }).ToList();
+
+            var info = _itemReturnInfoBusiness.GetItemReturnInfo(OrgId, itemReturnInfoId);
+            ItemReturnInfoViewModel itemReturnInfoViewModel = new ItemReturnInfoViewModel()
+            {
+                IRCode = info.IRCode,
+                LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(info.LineId.Value, OrgId).LineNumber,
+                WarehouseName = _warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, OrgId).WarehouseName
+            };
+
+            ViewBag.ReturnInfoViewModel = itemReturnInfoViewModel;
+            ViewBag.RequisitionStatus = info.StateStatus;
+
+            IEnumerable<ItemReturnDetailViewModel> itemReturnDetailViews = new List<ItemReturnDetailViewModel>();
+            AutoMapper.Mapper.Map(itemReturnDetailDTOs, itemReturnDetailViews);
+            return PartialView("_GetProductionItemReturnDetails", itemReturnDetailViews);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveWarehouseStockInByItemReturn(long returnInfoId, string status)
+        {
+            bool IsSuccess = false;
+            if (returnInfoId > 0 && !string.IsNullOrEmpty(status))
+            {
+                IsSuccess = _warehouseStockDetailBusiness.SaveWarehouseStockInByProductionItemReturn(returnInfoId, status, OrgId, UserId);
+            }
+            return Json(IsSuccess);
+        }
+
+        #endregion
+
+        #region RepairStock -Table
+        public ActionResult GetRepairStockInfoList(string flag, long? WarehouseId, long? ItemTypeId, long? ItemId)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(ware => new SelectListItem
+                {
+                    Text = ware.WarehouseName,
+                    Value = ware.Id.ToString()
+                }).ToList();
+                return View();
+            }
+            else
+            {
+                IEnumerable<RepairStockInfoDTO> repairStockInfoDTOs = _repairStockInfoBusiness.GetRepairStockInfos(OrgId).Select(info => new RepairStockInfoDTO
+                {
+                    RStockInfoId = info.RStockInfoId,
+                    WarehouseId = info.WarehouseId,
+                    Warehouse = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, OrgId).WarehouseName),
+                    ItemTypeId = info.ItemTypeId,
+                    ItemType = (_itemTypeBusiness.GetItemType(info.ItemTypeId.Value, OrgId).ItemName),
+                    ItemId = info.ItemId,
+                    Item = (_itemBusiness.GetItemOneByOrgId(info.ItemId.Value, OrgId).ItemName),
+                    UnitId = info.UnitId,
+                    Unit = (_unitBusiness.GetUnitOneByOrgId(info.UnitId.Value, OrgId).UnitSymbol),
+                    StockInQty = info.StockInQty,
+                    StockOutQty = info.StockOutQty,
+                    Remarks = info.Remarks,
+                    OrganizationId = info.OrganizationId
+                }).AsEnumerable();
+
+                repairStockInfoDTOs = repairStockInfoDTOs.Where(ws => (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId) && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)).ToList();
+
+                List<RepairStockInfoViewModel> repairStockInfoViewModels = new List<RepairStockInfoViewModel>();
+                AutoMapper.Mapper.Map(repairStockInfoDTOs, repairStockInfoViewModels);
+                return PartialView("_RepairStockInfoList", repairStockInfoViewModels);
+            }
+        }
+        #endregion
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

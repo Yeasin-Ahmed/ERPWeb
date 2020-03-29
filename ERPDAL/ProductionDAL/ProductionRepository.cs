@@ -29,4 +29,15 @@ namespace ERPDAL.ProductionDAL
     {
         public ProductionStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
+
+    public class ItemReturnInfoRepository : ProductionBaseRepository<ItemReturnInfo>
+    {
+        public ItemReturnInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+
+    public class ItemReturnDetailRepository : ProductionBaseRepository<ItemReturnDetail>
+    {
+        public ItemReturnDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+
 }
