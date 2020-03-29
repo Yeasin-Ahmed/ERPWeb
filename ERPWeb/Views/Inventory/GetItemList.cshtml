@@ -75,7 +75,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header alert-primary">
-                <h4 id="modalHeading" class="modal-title">Add New Item</h4>
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalhead">Add New Item</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
@@ -154,6 +154,7 @@
         })
 
         function OpenModal() {
+            $("#spanModalhead").text('Add New Item');
             $("#modalItem").modal("show");
             $(".error").addClass("hide");
         }
@@ -239,6 +240,7 @@
                         chkStatestatus.prop("checked", true);
                     }
                     OpenModal();
+                    $("#spanModalhead").text('Update Item');
                 }
                 else {
                     alert("No data found..")
