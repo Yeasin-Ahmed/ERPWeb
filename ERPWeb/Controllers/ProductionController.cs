@@ -59,7 +59,7 @@ namespace ERPWeb.Controllers
                 EntryDate = line.EntryDate,
                 UpUserId = line.UpUserId,
                 UpdateDate = line.UpdateDate
-            }).OrderBy(p => p.LineId).ToPagedList(page ?? 1, 3);
+            }).OrderBy(p => p.LineId).ToPagedList(page ?? 1, 15);
             IEnumerable<ProductionLineViewModel> productionLineViewModelForPage = new List<ProductionLineViewModel>();
             //List<ProductionLineViewModel> productionLineViewModels = new List<ProductionLineViewModel>();
             // AutoMapper.Mapper.Map(productionLineDTO, productionLineViewModels);
@@ -171,7 +171,7 @@ namespace ERPWeb.Controllers
                 WarehouseId = info.WarehouseId,
                 WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId, OrgId).WarehouseName),
                 Qty = _requsitionDetailBusiness.GetRequsitionDetailByReqId(info.ReqInfoId, OrgId).Select(s => s.ItemId).Distinct().Count(),
-            }).OrderBy(p => p.ReqInfoId).ToPagedList(page ?? 1, 3);
+            }).OrderBy(p => p.ReqInfoId).ToPagedList(page ?? 1, 15);
             IEnumerable<RequsitionInfoViewModel> requsitionInfoViewModelForPage = new List<RequsitionInfoViewModel>();
             //List<RequsitionInfoViewModel> requsitionInfoViewModels = new List<RequsitionInfoViewModel>();
             //AutoMapper.Mapper.Map(requsitionInfoDTO, requsitionInfoViewModels);
@@ -251,7 +251,7 @@ namespace ERPWeb.Controllers
                 OrganizationId = info.OrganizationId,
             }).AsEnumerable();
 
-            productionStockInfoDTO = productionStockInfoDTO.Where(ws => (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId) && (LineId == null || LineId == 0 || ws.LineId == LineId) && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)).OrderBy(p => p.StockInfoId).ToPagedList(page ?? 1, 3);
+            productionStockInfoDTO = productionStockInfoDTO.Where(ws => (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId) && (LineId == null || LineId == 0 || ws.LineId == LineId) && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)).OrderBy(p => p.StockInfoId).ToPagedList(page ?? 1, 15);
 
             // List<ProductionStockInfoViewModel> productionStockInfoViews = new List<ProductionStockInfoViewModel>();
             //AutoMapper.Mapper.Map(productionStockInfoDTO, productionStockInfoViews);
@@ -275,7 +275,7 @@ namespace ERPWeb.Controllers
                 UpUserId = des.UpUserId,
                 UpdateDate = des.UpdateDate
 
-            }).OrderBy(des => des.DescriptionId).ToPagedList(page ?? 1, 3);
+            }).OrderBy(des => des.DescriptionId).ToPagedList(page ?? 1, 15);
             IEnumerable<DescriptionViewModel> descriptionViewModelForPage = new List<DescriptionViewModel>();
             return View(descriptionViewModels);
         }

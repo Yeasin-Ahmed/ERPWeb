@@ -110,7 +110,7 @@ namespace ERPWeb.Controllers
                 Remarks=br.Remarks,
                 OrganizationId=br.OrganizationId,
                 OrganizationName=(_organizationBusiness.GetOrganizationById(OrgId).OrganizationName),
-            }).OrderBy(br => br.BranchId).ToPagedList(page ?? 1, 5);
+            }).OrderBy(br => br.BranchId).ToPagedList(page ?? 1, 15);
             IEnumerable<BranchViewModel> branchViewModelForPage = new List<BranchViewModel>();
             return View(branchViewModels);
         }
