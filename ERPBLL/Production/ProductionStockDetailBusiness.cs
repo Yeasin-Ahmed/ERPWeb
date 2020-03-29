@@ -50,6 +50,7 @@ namespace ERPBLL.Production
             {
                 ProductionStockDetail stockDetail = new ProductionStockDetail();
                 stockDetail.WarehouseId = item.WarehouseId;
+                stockDetail.LineId = item.LineId;
                 stockDetail.ItemTypeId = item.ItemTypeId;
                 stockDetail.ItemId = item.ItemId;
                 stockDetail.Quantity = item.Quantity;
@@ -73,6 +74,7 @@ namespace ERPBLL.Production
                     ProductionStockInfo productionStockInfo = new ProductionStockInfo();
                     productionStockInfo.LineId = item.LineId;
                     productionStockInfo.WarehouseId = item.WarehouseId;
+                    productionInfo.LineId = item.LineId;
                     productionStockInfo.ItemTypeId = item.ItemTypeId;
                     productionStockInfo.ItemId = item.ItemId;
                     productionStockInfo.UnitId = stockDetail.UnitId;
@@ -131,6 +133,7 @@ namespace ERPBLL.Production
                     ProductionStockDetailDTO productionStockDetailDTO = new ProductionStockDetailDTO
                     {
                         WarehouseId = reqInfo.WarehouseId,
+                        LineId = reqInfo.LineId,
                         ItemTypeId = item.ItemTypeId,
                         ItemId = item.ItemId,
                         OrganizationId = orgId,

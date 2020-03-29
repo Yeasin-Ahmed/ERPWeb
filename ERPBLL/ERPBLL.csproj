@@ -69,20 +69,20 @@
   <ItemGroup>
     <Compile Include="Common\Status.cs" />
     <Compile Include="Common\Utility.cs" />
+    <Compile Include="ControlPanel\BranchBusiness.cs" />
+    <Compile Include="ControlPanel\Interface\IBranchBusiness.cs" />
     <Compile Include="ControlPanel\Interface\IOrganizationBusiness.cs" />
+    <Compile Include="ControlPanel\Interface\IRoleBusiness.cs" />
     <Compile Include="ControlPanel\OrganizationBusiness.cs" />
-    <Compile Include="Inventory\Interface\IRepairStockDetailBusiness.cs" />
-    <Compile Include="Inventory\Interface\IRepairStockInfoBusiness.cs" />
+    <Compile Include="ControlPanel\RoleBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemTypeBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemBusiness.cs" />
     <Compile Include="Inventory\Interface\IWarehouseStockDetailBusiness.cs" />
     <Compile Include="Inventory\Interface\IWarehouseStockInfoBusiness.cs" />
-    <Compile Include="Inventory\RepairStockDetailBusiness.cs" />
-    <Compile Include="Inventory\RepairStockInfoBusiness.cs" />
     <Compile Include="Inventory\WarehouseStockDetailBusiness.cs" />
     <Compile Include="Inventory\WarehouseStockInfoBusiness.cs" />
-    <Compile Include="Production\Interface\IItemReturnDetailBusiness.cs" />
-    <Compile Include="Production\Interface\IItemReturnInfoBusiness.cs" />
+    <Compile Include="Production\DescriptionBusiness.cs" />
+    <Compile Include="Production\Interface\IDescriptionBusiness.cs" />
     <Compile Include="Production\Interface\IProductionLineBusiness.cs" />
     <Compile Include="Production\Interface\IProductionStockInfoBusiness.cs" />
     <Compile Include="Production\Interface\IRequsitionDetailBusiness.cs" />
@@ -92,8 +92,6 @@
     <Compile Include="Inventory\ItemBusiness.cs" />
     <Compile Include="Inventory\ItemTypeBusiness.cs" />
     <Compile Include="Production\Interface\IProductionStockDetailBusiness.cs" />
-    <Compile Include="Production\ItemReturnDetailBusiness.cs" />
-    <Compile Include="Production\ItemReturnInfoBusiness.cs" />
     <Compile Include="Production\ProductionLineBusiness.cs" />
     <Compile Include="Production\ProductionStockDetailBusiness.cs" />
     <Compile Include="Production\ProductionStockInfoBusiness.cs" />

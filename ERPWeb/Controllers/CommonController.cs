@@ -5,6 +5,7 @@ using ERPWeb.Filters;
 using System.Linq;
 using System.Web.Mvc;
 using ERPBO.Inventory.DTOModel;
+using ERPBLL.ControlPanel.Interface;
 
 namespace ERPWeb.Controllers
 {
@@ -18,11 +19,12 @@ namespace ERPWeb.Controllers
         private readonly IRequsitionInfoBusiness _requsitionInfoBusiness;
         private readonly IRequsitionDetailBusiness _requsitionDetailBusiness;
         private readonly IProductionLineBusiness _productionLineBusiness;
-        private readonly IProductionStockInfoBusiness _productionStockInfoBusiness;
+        private readonly IBranchBusiness _branchBusiness;
+        private readonly IRoleBusiness _roleBusiness;
 
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
-        public CommonController(IWarehouseBusiness warehouseBusiness,IItemTypeBusiness itemTypeBusiness,IUnitBusiness unitBusiness,IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness,IItemTypeBusiness itemTypeBusiness,IUnitBusiness unitBusiness,IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness,IBranchBusiness branchBusiness,IRoleBusiness roleBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -31,7 +33,8 @@ namespace ERPWeb.Controllers
             this._requsitionInfoBusiness = requsitionInfoBusiness;
             this._requsitionDetailBusiness = requsitionDetailBusiness;
             this._productionLineBusiness = productionLineBusiness;
-            this._productionStockInfoBusiness = productionStockInfoBusiness;
+            this._branchBusiness = branchBusiness;
+            this._roleBusiness = roleBusiness;
         }
 
         #region Validation Action Methods
@@ -60,47 +63,24 @@ namespace ERPWeb.Controllers
             bool isExist = _itemBusiness.IsDuplicateItemName(itemName, id, OrgId);
             return Json(isExist);
         }
-
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult IsDuplicateLineNumber(string lineNumber, long id)
+        public ActionResult IsDuplicateBrachName(string branchName, long id)
         {
-            bool isExist = _productionLineBusiness.IsDuplicateLineNumber(lineNumber, id, OrgId);
+            bool isExist = _branchBusiness.IsDuplicateBrachName(branchName, id, OrgId);
             return Json(isExist);
         }
-
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetUnitByItemId(long itemId)
+        public ActionResult IsDuplicateRoleName(string roleName, long id)
         {
-            var unitId = _itemBusiness.GetItemOneByOrgId(itemId, OrgId).UnitId;
-            var unit = _unitBusiness.GetUnitOneByOrgId(unitId, OrgId);
-            UnitDomainDTO unitDTO = new UnitDomainDTO();
-            unitDTO.UnitId = unit.UnitId;
-            unitDTO.UnitName = unit.UnitName;
-            unitDTO.UnitSymbol = unit.UnitSymbol;
-            return Json(unitDTO);
+            bool isExist = _roleBusiness.IsDuplicateRoleName(roleName, id, OrgId);
+            return Json(isExist);
         }
-
-        [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetItemUnitAndPDNStockQtyByLineId(long itemId,long lineId)
-        {
-            var unitId = _itemBusiness.GetItemOneByOrgId(itemId, OrgId).UnitId;
-            var unit = _unitBusiness.GetUnitOneByOrgId(unitId, OrgId);
-            var productionStock = _productionStockInfoBusiness.GetAllProductionStockInfoByItemLineId(OrgId, itemId, lineId);
-            var itemStock = 0;
-            if (productionStock != null)
-            {
-                itemStock = (productionStock.StockInQty - productionStock.StockOutQty).Value;
-            }
-            return Json(new {unitid=unit.UnitId,unitName=unit.UnitName,unitSymbol = unit.UnitSymbol,stockQty=itemStock });
-        }
-
-        #region Dropdown List
 
         [HttpPost]
         public ActionResult GetItemTypeForDDL(long warehouseId)
         {
-            var itemTypes = _itemTypeBusiness.GetAllItemTypeByOrgId(OrgId).AsEnumerable();
-            var dropDown = itemTypes.Where(i => i.WarehouseId == warehouseId).Select(i => new Dropdown { text = i.ItemName, value = i.ItemId.ToString() }).ToList();
+            var itemTypes =_itemTypeBusiness.GetAllItemTypeByOrgId(OrgId).AsEnumerable();
+            var dropDown = itemTypes.Where(i => i.WarehouseId == warehouseId).Select(i=> new Dropdown { text = i.ItemName,value= i.ItemId.ToString() }).ToList();
             return Json(dropDown);
         }
 
@@ -112,7 +92,23 @@ namespace ERPWeb.Controllers
             return Json(dropDown);
         }
 
-        #endregion
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult GetUnitByItemId(long itemId)
+        {
+            var unitId = _itemBusiness.GetItemOneByOrgId(itemId, OrgId).UnitId;
+            var unit = _unitBusiness.GetUnitOneByOrgId(unitId, OrgId);
+            UnitDomainDTO unitDTO = new UnitDomainDTO();
+            unitDTO.UnitId = unit.UnitId;
+            unitDTO.UnitName = unit.UnitName;
+            unitDTO.UnitSymbol = unit.UnitSymbol;
+            return Json(unitDTO);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateLineNumber(string lineNumber,long id)
+        {
+            bool isExist =_productionLineBusiness.IsDuplicateLineNumber(lineNumber, id, OrgId);
+            return Json(isExist);
+        }
 
         protected override void Dispose(bool disposing)
         {

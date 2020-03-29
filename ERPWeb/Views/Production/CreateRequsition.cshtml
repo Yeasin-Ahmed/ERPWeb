@@ -45,6 +45,10 @@
             </div>
             <div class="row">
                 <div class="col-md-3">
+                    <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
+                    @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model Name--", new { @class = "form-control form-control-sm" })
+                </div>
+                <div class="col-md-3">
                     <label for="txtQuantity" class="control-label font-weight-bold">Quantity</label>
                     <div class="input-group col-md-8">
                         <input type="number" name="quantity" id="txtQuantity" class="form-control form-control-sm" />
@@ -87,6 +91,7 @@
                             <th>ItemTypeName</th>
                             <th class="hide"></th>
                             <th>ItemName</th>
+                            <th class="hide"></th>
                             <th>Quantity</th>
                             <th>Unit</th>
                             <th>Remarks</th>
@@ -106,15 +111,19 @@
         var ddlWarehouse = $("#ddlWarehouse");
         var ddlLineNumber = $("#ddlLineNumber");
         var ddlItemType = $("#ddlItemType");
+        var ddlModelName = $("#ddlModelName");
         var ddlItem = $("#ddlItem");
         var unitName = $("#unitName");
         var txtRemarks = $("#txtRemarks");
         var txtQuantity = $("#txtQuantity");
 
+        //F
         ddlLineNumber.change(function () {
             disable("#ddlLineNumber")
-        })
-
+        });
+        ddlModelName.change(function () {
+            disable("#ddlModelName")
+        });
         //casced dropdown load for itemtype
         ddlWarehouse.change(function () {
             $("#unitName").text('');
@@ -178,6 +187,7 @@
             clearDropdown("ddlItem");
             enable("#ddlWarehouse");
             enable("#ddlLineNumber");
+            enable("#ddlModelName");
             $("#tblRequsitionDetailsData tbody").empty();
             ddlItemType.val('');
             e.preventDefault();
@@ -254,6 +264,7 @@
                 ReqInfoId: 0,
                 LineId: TryParseInt(ddlLineNumber.val(), 0),
                 WarehouseId: TryParseInt(ddlWarehouse.val(), 0),
+                DescriptionId: TryParseInt(ddlModelName.val(), 0),
                 ReqDetails: reqDetails
             };
 

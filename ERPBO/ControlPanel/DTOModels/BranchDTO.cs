@@ -16,10 +16,14 @@ namespace ERPBO.ControlPanel.DTOModels
         public string PhoneNo { get; set; }
         public string Fax { get; set; }
         public bool IsActive { get; set; }
+        public string Remarks { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
-        public long OrgId { get; set; }
+        public long OrganizationId { get; set; }
+        //custom
+        public string OrganizationName { get; set; }
+        public string StateStatus { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.RequsitionInfoViewModel>
+@using PagedList;
+@using PagedList.Mvc;
 @{ 
     int sl = 0;
     string badge = string.Empty;
@@ -14,6 +16,8 @@
             <th>Line Number</th>
             <th class="hide"></th>
             <th>Warehouse Name</th>
+            <th class="hide"></th>
+            <th>Model Name</th>
             <th>Total Item</th>
             <th>State Status</th>
             <th>Remarks</th>
@@ -32,6 +36,7 @@
                 <td>@info.ReqInfoCode</td>
                 <td>@info.LineNumber</td>
                 <td>@info.WarehouseName</td>
+                <td class="text-center">@info.ModelName</td>
                 <td class="text-center">@info.Qty</td>
                 <td class="text-center" data-val="@info.StateStatus">
                     <span class="@badge">@info.StateStatus</span>
@@ -39,7 +44,7 @@
                 <td>@info.Remarks</td>
                 <td>@info.EntryDate.Value.ToString("dd MMM yyyy")</td>
                 <td class="text-center">
-                    <a href="#" class="btn btn-block btn-outline-secondary btn-sm data-details" title="View Details" data-details="@info.ReqInfoId"><i class="fas fa-eye"></i> Details</a>
+                    <a href="#" class="btn btn-block btn-outline-dark btn-sm data-details" title="View Details" data-details="@info.ReqInfoId"><i class="fas fa-eye"></i> Details</a>
                     @if (info.StateStatus == "Rechecked")
                     {
                         <a href="#" class="btn btn-block btn-outline-warning btn-sm data-edit-item" data-edit-item="@info.ReqInfoId"><i class="fa fa-pen"></i> Edit</a>
@@ -57,3 +62,8 @@
         }
     </tbody>
 </table>
+<div class="container">
+    <ul class="pagination pagination-sm float-lg-right ">
+        @Html.PagedListPager((IPagedList)Model, page => Url.Action("GetReqInfoList", new { page}),new PagedListRenderOptions() { Display=PagedListDisplayMode.IfNeeded,DisplayPageCountAndCurrentLocation=true})
+    </ul>
+</div>

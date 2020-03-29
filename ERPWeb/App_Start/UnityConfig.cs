@@ -34,6 +34,7 @@ namespace ERPWeb
             container.RegisterType<IInventoryUnitOfWork, InventoryUnitOfWork>(); // database
 
             // Production Database
+            container.RegisterType<IDescriptionBusiness, DescriptionBusiness>();
             container.RegisterType<IProductionLineBusiness, ProductionLineBusiness>();
             container.RegisterType<IRequsitionDetailBusiness, RequsitionDetailBusiness>();
             container.RegisterType<IRequsitionInfoBusiness, RequsitionInfoBusiness>();
@@ -44,6 +45,8 @@ namespace ERPWeb
             container.RegisterType<IProductionUnitOfWork, ProductionUnitOfWork>();
 
             // Control Panel Database
+            container.RegisterType<IRoleBusiness, RoleBusiness>();
+            container.RegisterType<IBranchBusiness, BranchBusiness>();
             container.RegisterType<IOrganizationBusiness, OrganizationBusiness>();
             container.RegisterType<IControlPanelUnitOfWork, ControlPanelUnitOfWork>();
 

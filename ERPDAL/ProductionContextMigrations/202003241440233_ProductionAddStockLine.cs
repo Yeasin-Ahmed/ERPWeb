@@ -3,7 +3,7 @@ namespace ERPDAL.ProductionContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ProductionStockLineId : DbMigration
+    public partial class ProductionAddStockLine : DbMigration
     {
         public override void Up()
         {

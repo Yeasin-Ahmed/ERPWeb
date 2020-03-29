@@ -1,4 +1,6 @@
-﻿@model IEnumerable<ERPBO.Production.ViewModels.ProductionStockInfoViewModel>
+﻿@model PagedList.IPagedList<ERPBO.Production.DTOModel.ProductionStockInfoDTO>
+@using PagedList;
+@using PagedList.Mvc;
 @{
     int sl = 0;
 }
@@ -11,6 +13,8 @@
             <th>Line</th>
             <th class="hide"></th>
             <th>Warehouse</th>
+            <th class="hide"></th>
+            <th>LineNumber</th>
             <th class="hide"></th>
             <th>Item Type</th>
             <th class="hide"></th>
@@ -34,6 +38,8 @@
                 <td>@info.LineNumber</td>
                 <td class="hide">@info.WarehouseId</td>
                 <td>@info.Warehouse</td>
+                <td class="hide">@info.LineId</td>
+                <td>@info.LineNumber</td>
                 <td class="hide">@info.ItemTypeId</td>
                 <td>@info.ItemType</td>
                 <td class="hide">@info.ItemId</td>
@@ -55,3 +61,8 @@
         }
     </tbody>
 </table>
+<div class="container">
+    <ul class="pagination pagination-lg float-lg-right">
+        @Html.PagedListPager((IPagedList)Model,page=>Url.Action("GetProductionStockInfoList",new { page}),new PagedListRenderOptions() { Display=PagedListDisplayMode.IfNeeded,DisplayPageCountAndCurrentLocation=true})
+    </ul>
+</div>

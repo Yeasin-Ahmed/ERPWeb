@@ -3,7 +3,7 @@ namespace ERPDAL.ControlPanelContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class UpdateOrgAddBranchAndUser : DbMigration
+    public partial class ControlPanelAllEntities_25Mar2020 : DbMigration
     {
         public override void Up()
         {
@@ -52,16 +52,30 @@ namespace ERPDAL.ControlPanelContextMigrations
                 .ForeignKey("dbo.tblOrganizations", t => t.OrgId, cascadeDelete: true)
                 .Index(t => t.OrgId);
             
-            AddColumn("dbo.tblOrganizations", "ShortName", c => c.String(maxLength: 50));
-            AddColumn("dbo.tblOrganizations", "Email", c => c.String(maxLength: 150));
-            AddColumn("dbo.tblOrganizations", "PhoneNumber", c => c.String(maxLength: 50));
-            AddColumn("dbo.tblOrganizations", "MobileNumber", c => c.String(maxLength: 50));
-            AddColumn("dbo.tblOrganizations", "Fax", c => c.String(maxLength: 50));
-            AddColumn("dbo.tblOrganizations", "Website", c => c.String(maxLength: 100));
-            AddColumn("dbo.tblOrganizations", "IsActive", c => c.Boolean(nullable: false));
-            AddColumn("dbo.tblOrganizations", "ContractDate", c => c.DateTime());
-            AddColumn("dbo.tblOrganizations", "OrgLogoPath", c => c.String(maxLength: 250));
-            AddColumn("dbo.tblOrganizations", "ReportLogoPath", c => c.String(maxLength: 250));
+            CreateTable(
+                "dbo.tblOrganizations",
+                c => new
+                    {
+                        OrgId = c.Long(nullable: false, identity: true),
+                        OrganizationName = c.String(maxLength: 150),
+                        ShortName = c.String(maxLength: 50),
+                        Address = c.String(maxLength: 150),
+                        Email = c.String(maxLength: 150),
+                        PhoneNumber = c.String(maxLength: 50),
+                        MobileNumber = c.String(maxLength: 50),
+                        Fax = c.String(maxLength: 50),
+                        Website = c.String(maxLength: 100),
+                        IsActive = c.Boolean(nullable: false),
+                        ContractDate = c.DateTime(),
+                        OrgLogoPath = c.String(maxLength: 250),
+                        ReportLogoPath = c.String(maxLength: 250),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.OrgId);
+            
         }
         
         public override void Down()
@@ -70,16 +84,7 @@ namespace ERPDAL.ControlPanelContextMigrations
             DropForeignKey("dbo.tblBranch", "OrgId", "dbo.tblOrganizations");
             DropIndex("dbo.tblBranch", new[] { "OrgId" });
             DropIndex("dbo.tblApplicationUsers", new[] { "BranchId" });
-            DropColumn("dbo.tblOrganizations", "ReportLogoPath");
-            DropColumn("dbo.tblOrganizations", "OrgLogoPath");
-            DropColumn("dbo.tblOrganizations", "ContractDate");
-            DropColumn("dbo.tblOrganizations", "IsActive");
-            DropColumn("dbo.tblOrganizations", "Website");
-            DropColumn("dbo.tblOrganizations", "Fax");
-            DropColumn("dbo.tblOrganizations", "MobileNumber");
-            DropColumn("dbo.tblOrganizations", "PhoneNumber");
-            DropColumn("dbo.tblOrganizations", "Email");
-            DropColumn("dbo.tblOrganizations", "ShortName");
+            DropTable("dbo.tblOrganizations");
             DropTable("dbo.tblBranch");
             DropTable("dbo.tblApplicationUsers");
         }

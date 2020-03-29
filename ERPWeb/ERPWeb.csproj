@@ -184,7 +184,6 @@
     <Content Include="Content\plugins\Toastr\toastr.css" />
     <Content Include="Content\plugins\Toastr\toastr.min.js" />
     <Content Include="Content\Site.css" />
-    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="MigrationScripts.txt" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
@@ -275,18 +274,9 @@
     <Content Include="Views\Production\_ProductionStockInfoList.cshtml" />
     <Content Include="Views\ControlPanel\GetOrganizations.cshtml" />
     <Content Include="Views\ControlPanel\CreateOrganization.cshtml" />
-    <Content Include="Views\Production\GetItemReturnList.cshtml" />
-    <Content Include="Views\Shared\UI_Common_Layout.cshtml" />
-    <Content Include="Views\Production\CreateFaultyGoodReturn.cshtml" />
-    <Content Include="Views\Production\_GetItemReturnList.cshtml" />
-    <Content Include="Views\Inventory\_GetItemReturnList.cshtml" />
-    <Content Include="Views\Inventory\GetItemReturnList.cshtml" />
-    <Content Include="Views\Inventory\_GetProductionItemReturnDetails.cshtml" />
-    <Content Include="Views\Production\_GetProductionItemReturnDetails.cshtml" />
-    <Content Include="Views\Inventory\GetRepairStockInfoList.cshtml" />
-    <Content Include="Views\Inventory\_RepairStockInfoList.cshtml" />
-    <Content Include="Views\Production\GetProductionFaultyOrReturnItemDetailList.cshtml" />
-    <Content Include="Views\Production\_GetProductionFaultyOrReturnItemDetailList.cshtml" />
+    <Content Include="Views\Production\GetDescriptionList.cshtml" />
+    <Content Include="Views\ControlPanel\GetBranchList.cshtml" />
+    <Content Include="Views\ControlPanel\GetRoleList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

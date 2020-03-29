@@ -44,6 +44,9 @@ namespace ERPBO.Production.ViewModels
         public long? WarehouseId { get; set; }
         [StringLength(100)]
         public string WarehouseName { get; set; }
+        [Range(1, long.MaxValue)]
+        public long DescriptionId { get; set; }
+        public string ModelName { get; set; }
         public List<VmReqDetails> ReqDetails { get; set; }
     }
 }

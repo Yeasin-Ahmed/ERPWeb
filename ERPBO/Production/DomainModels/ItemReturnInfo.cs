@@ -21,8 +21,6 @@ namespace ERPBO.Production.DomainModels
         public string FaultyCase { get; set; }
         public long?  LineId { get; set; }
         public long? WarehouseId { get; set; }
-        [StringLength(50)]
-        public string StateStatus { get; set; }
         [StringLength(100)]
         public string Remarks { get; set; }
         public long OrganizationId { get; set; }
